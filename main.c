@@ -5,13 +5,15 @@
 #include <unistd.h>
 #include <string.h>
 #include <netdb.h>
+#include <sys/types.h>
+#include <signal.h>
+
 
 #include "data_structures.h"
 #include "entry_list.h"
 #include "fetcher.h"
 #include "parser.h"
 #include "differ.h"
-#include "structs.h"
 #include "utils.h"
 
 #define DEFAULT_TIME 30
@@ -19,6 +21,14 @@
 #define EXIT_SUCESS 0
 #define false 0
 #define true 1
+
+
+void 
+mensaje ()
+{
+  printf (" Hola, soy el hijo\n");
+  return;
+}
 
 void 
 bye (FILE *fd, URL *urlList)
@@ -99,8 +109,11 @@ main (int argc, char **argv)
   FILE *fd = NULL;
   URL* urlList;
   char entry;
+  pid_t pID; // PID para fetcher
   
   opterr = 0;
+
+  /********* BEGIN Manejo de Opciones por cónsola ******/
 
   while ((a = getopt (argc, argv, "t:d:a:")) != -1) 
     switch (a)
@@ -151,6 +164,8 @@ main (int argc, char **argv)
       usage (EXIT_FAILURE);
     }
   
+  /********* END Manejo de Opciones por cónsola ******/
+
   if (time == -1)
     time = DEFAULT_TIME; 
 
@@ -166,29 +181,52 @@ main (int argc, char **argv)
         free_URL (urlList);
         exit (EXIT_FAILURE);
       }
-
-  while (true)
+  
+  pID = fork();
+  
+  if (pID == 0) // código del hijo
     {
-      entry = getchar();
-      puts("");
-      switch (entry)
+      // Bind de función a señal SIGALRM
+      signal (SIGALRM, mensaje);
+      while (true)
         {
-        case 'p':
-          puts ("pause the program");
-          break;
-        case 'c':
-          puts ("continue program");
-          break;
-        case 's':
-          puts ("terminate program");
-          bye (fd, urlList);
-          sleep (2);
-          exit (EXIT_SUCESS);
-        default:
-          if (entry != '\n')
-            puts("Instrucción desconocida");
+          alarm (time);
+          pause ();
         }
-    } //while (entry != 's');
+    }
+  else if (pID < 0) // Error al hacer fork
+    {
+      fprintf (stderr, "No se pudo hacer fork \n");
+      bye (fd, urlList);
+      exit (EXIT_FAILURE);
+    }
+  else 
+    {
+      // Código del padre
+      printf ("Comienzo del programa: \n");
+      while (true)
+        {
+          entry = getchar();
+          puts("");
+          switch (entry)
+            {
+            case 'p':
+              puts ("pause the program");
+              break;
+            case 'c':
+              puts ("continue program");
+              break;
+            case 's':
+              puts ("terminate program");
+              bye (fd, urlList);
+              sleep (2);
+              exit (EXIT_SUCESS);
+            default:
+              if (entry != '\n')
+                puts("Instrucción desconocida");
+            }
+        }
+    }
 
   bye (fd, urlList);
   /* if (fd)  */
