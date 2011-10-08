@@ -1,3 +1,4 @@
+#include "data_structures.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -5,13 +6,6 @@
 
 #ifndef UTILS_H
 #define UTILS_H
-
-struct URL
-{
-  char dir[2048];
-  char domain[1024];
-  struct URL *next;
-} typedef URL;
 
 URL *
 parseFile (FILE*);

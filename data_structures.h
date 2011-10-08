@@ -16,9 +16,17 @@ struct entry{
 } typedef entry;
 
 struct entry_node typedef entry_node;
-
 struct entry_node{
   entry e;
   entry_node* next;
 };
+
+struct URL typedef URL;
+struct URL
+{
+  char dir[2048];
+  char domain[1024];
+  struct URL *next;
+};
+
 #endif
