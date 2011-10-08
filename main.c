@@ -110,6 +110,7 @@ main (int argc, char **argv)
   URL* urlList;
   char entry;
   pid_t pID; // PID para fetcher
+  int childExitStatus;
   
   opterr = 0;
 
@@ -196,7 +197,7 @@ main (int argc, char **argv)
     }
   else if (pID < 0) // Error al hacer fork
     {
-      fprintf (stderr, "No se pudo hacer fork \n");
+      perror("fork: ");
       bye (fd, urlList);
       exit (EXIT_FAILURE);
     }
