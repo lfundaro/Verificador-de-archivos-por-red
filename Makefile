@@ -8,6 +8,9 @@ all: $(OBJS) data_structures.h Makefile
 main.o : main.c
 	$(GCC) $(OPS) -c main.c
 
+dispatcher: dispatcher.c dispatcher.h
+	$(GCC) $(OPS) -c dispatcher.c
+
 fetcher.o: fetcher.c fetcher.h
 	$(GCC) $(OPS) -c fetcher.c
 
