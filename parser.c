@@ -124,7 +124,7 @@ parse_entry(char* pg, char* base_url, char* path,
   /***Recuperar nombre***/
   char* name = get_data(REG_FILENAME_POS,pg,matches_ptr);
   if(name == (char*)-1){
-    fprintf(stdout,"Error: entrada sin nombre");
+    fprintf(stdout,"Error: entrada sin nombre\n");
     exit(EXIT_FAILURE);
   }  
   char* entry_path = (char*)malloc(sizeof(char)*(strlen(path)+strlen(name)+1));
@@ -138,7 +138,7 @@ parse_entry(char* pg, char* base_url, char* path,
   /***Recuperar fecha***/
   char* entry_date = get_data(REG_DATE_POS,pg,matches_ptr);
   if(entry_date == (char*)-1){
-    fprintf(stdout,"Error: entrada sin fecha");
+    fprintf(stdout,"Error: entrada sin fecha\n");
     exit(EXIT_FAILURE);
   }  
   e.date = entry_path;
@@ -146,7 +146,7 @@ parse_entry(char* pg, char* base_url, char* path,
   /***Recuperar tama~no***/
   char* entry_size = get_data(REG_SIZE_POS,pg,matches_ptr);
   if(entry_date == (char*)-1){
-    fprintf(stdout,"Error: entrada sin tama~no");
+    fprintf(stdout,"Error: entrada sin tama~no\n");
     exit(EXIT_FAILURE);
   }  
   e.size = entry_size;
@@ -189,7 +189,7 @@ parse_url(char* pg, char** path_ptr, char** base_url_ptr){
   //Ejecutar la expresion regular
   ret = regexec(cpattern,pg,4,matches,0);
   if(ret == REG_NOMATCH){
-    fprintf(stdout,"No se encontro URL al principio del HTML");
+    fprintf(stdout,"No se encontro URL al principio del HTML\n");
     exit(EXIT_FAILURE);
   }
   handle_regex_errors(ret);
