@@ -9,19 +9,13 @@
 #include <signal.h>
 
 
+#include "globals.h"
 #include "data_structures.h"
 #include "entry_list.h"
 #include "fetcher.h"
 #include "parser.h"
 #include "differ.h"
 #include "utils.h"
-
-#define DEFAULT_TIME 30
-#define EXIT_FAILURE 1
-#define EXIT_SUCESS 0
-#define false 0
-#define true 1
-
 
 void 
 mensaje ()

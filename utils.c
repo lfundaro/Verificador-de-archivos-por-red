@@ -67,3 +67,12 @@ file_lookup (char *dir, URL *urlList)
     }
   return cmp;
 }
+
+void
+init_entry(entry* e){
+  e->path = NULL;
+  e->URL = NULL;
+  e->date = NULL; 
+  e->dateI = 0;
+  e->dt = NODIFF;
+}
