@@ -2,14 +2,17 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-void print(struct entry e){
-  if(e.dt == NEW)
-    printf("NEW entry!!!\n");
-  else if(e.dt == CHANGE)
-    printf("CHANGED entry!!!\n");
+void print(struct fileEntry e)
+{
+  if (e.dt == NODIFF)
+    return;
   else
-    printf("UNCHANGED entry!!!\n");
-
+    {
+      if (e.dt == NEW)
+        printf ("Se encontró nuevo archivo: %s\n", e.name);
+      else // Archivo cambio
+        printf ("Archivo modificado: %s\n", e.name);
+    }
   return;
 }
 
@@ -17,9 +20,7 @@ void printer(entry_node* diffs){
   entry_node* curr = diffs;//Variable de iteracion
 
   //Iterar sobre las diferencias
-  for(curr; curr != NULL; curr = curr->next){    
+  for(curr; curr != NULL; curr = curr->next)
     print(curr->e);
-  }
-
   return;
 }

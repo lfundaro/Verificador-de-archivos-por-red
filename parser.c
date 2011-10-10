@@ -3,6 +3,19 @@
 #include <stdlib.h>
 #include <stdio.h>
 
+//Funcion que parsea una pagina
+int
+parse(char* pg, struct entry_node** list){
+  //Build dummy entry
+  fileEntry e; e.name = NULL; e.URL = NULL;
+  e.date = 0; e.dt = NEW;
+
+  //Add new entry to the list
+  *list = add_head(e,*list);
+  
+  return 0; //return success
+}
+
 //Funcion que parsea cada pagina descargada
 entry_node*
 parser(char** pgs, unsigned short npgs){

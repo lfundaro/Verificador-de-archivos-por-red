@@ -3,7 +3,7 @@
 
 enum diff_type{NEW , CHANGE , NODIFF};
 
-struct entry{
+struct fileEntry{
 
   char* path;
   char* URL;
@@ -15,20 +15,30 @@ struct entry{
     debe almacenar que tipo de diferencia era*/
   enum diff_type dt;
 
-} typedef entry;
+} typedef fileEntry;
 
 struct entry_node typedef entry_node;
 struct entry_node{
-  entry e;
+  fileEntry e;
   entry_node* next;
 };
 
 struct URL typedef URL;
+
 struct URL
 {
-  char dir[2048];
-  char domain[1024];
+  char *dir;
+  char *domain;
+  struct addrinfo *netInfo;
   struct URL *next;
+};
+
+struct workerInfo typedef workerInfo;
+
+struct workerInfo 
+{
+  unsigned int time;
+  struct URL* urlList;
 };
 
 #endif

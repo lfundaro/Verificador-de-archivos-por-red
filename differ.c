@@ -2,9 +2,28 @@
 #include "entry_list.h"
 #include <stdlib.h>
 #include <stdio.h>
+#include <search.h>
+#include <string.h>
 
-enum diff_type diff(entry e){
-  return NEW;//Retornar diff de tipo NEW
+enum diff_type diff(fileEntry e)
+{
+  ENTRY *found = NULL;
+  int gle;
+  ENTRY qry;
+  qry.key = strdup (e.URL);
+  qry.data = strdup (e.date);
+  
+  // Chequear si es un nuevo archivo 
+  if ((found = hsearch (qry, FIND)) != NULL) // Archivo existe
+    {
+      free (qry.key);
+      if ((gle = strcmp (found->data, e.date)) == 0)
+        return NODIFF;
+      else 
+        return CHANGE;
+    }
+  else  // Archivo no existe
+      return NEW;
 }
 
 entry_node* differ(entry_node* entries){
@@ -21,7 +40,7 @@ entry_node* differ(entry_node* entries){
     //Si existe una diferencia, agregar la entrada
     if(dt != NODIFF){
       printf("changed detected: %d\n",dt);
-      entry e = curr->e; e.dt = dt;
+      fileEntry e = curr->e; e.dt = dt;
       diffs = add_head(e,diffs);
     }
   }

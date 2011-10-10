@@ -4,10 +4,10 @@
 #include "data_structures.h"
 
 //Agrega un nodo despues del nodo apuntado por el segundo argumento
-entry_node* add_entry(struct entry,struct entry_node*);
+entry_node* add_entry(struct fileEntry,struct entry_node*);
 
 //Agrega un nodo antes del nodo apuntado por el segundo argumento
-entry_node* add_head(struct entry,struct entry_node*);
+entry_node* add_head(struct fileEntry,struct entry_node*);
 
 //Libera el nodo que esta despues del nodo apuntado por el argumento
 entry_node* del_entry(struct entry_node*);

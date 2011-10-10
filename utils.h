@@ -3,6 +3,9 @@
 #include <stdlib.h>
 #include <string.h>
 #include <regex.h>
+#include <netdb.h>
+#include <netinet/in.h>
+#include <sys/socket.h>
 
 #ifndef UTILS_H
 #define UTILS_H

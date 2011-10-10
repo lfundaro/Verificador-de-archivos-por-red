@@ -2,7 +2,7 @@
 #include <stdlib.h>
 
 //Agrega un nodo despues del nodo apuntado por el segundo argumento
-entry_node* add_entry(struct entry e, struct entry_node* en){
+entry_node* add_entry(struct fileEntry e, struct entry_node* en){
   entry_node* new_en = (entry_node*)malloc(sizeof(entry_node));
   
   new_en->e = e;
@@ -13,7 +13,7 @@ entry_node* add_entry(struct entry e, struct entry_node* en){
 }
 
 //Agrega un nodo antes del nodo apuntado por el segundo argumento
-entry_node* add_head(struct entry e, struct entry_node* en){
+entry_node* add_head(struct fileEntry e, struct entry_node* en){
   entry_node* new_en = (entry_node*)malloc(sizeof(entry_node));
   
   new_en->e = e;
