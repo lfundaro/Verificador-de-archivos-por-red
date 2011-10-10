@@ -7,7 +7,7 @@
 int
 parse(char* pg, struct entry_node** list){
   //Build dummy entry
-  entry e; e.name = NULL; e.URL = NULL;
+  fileEntry e; e.name = NULL; e.URL = NULL;
   e.date = 0; e.dt = NEW;
 
   //Add new entry to the list
