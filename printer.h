@@ -3,7 +3,7 @@
 
 #include "data_structures.h"
 
-void print(struct entry);
+void print(struct fileEntry);
 
 void printer(entry_node*);
 
