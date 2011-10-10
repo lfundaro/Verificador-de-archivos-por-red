@@ -3,7 +3,7 @@
 
 #include "data_structures.h"
 
-void update(struct entry);
+void update(struct fileEntry);
 
 void updater(entry_node*);
 
