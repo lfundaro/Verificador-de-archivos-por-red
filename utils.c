@@ -8,12 +8,18 @@ parseFile (FILE* fd)
   int char_size = URL_MAX_SIZE;
   char *input_line = (char *) malloc (char_size + 1);
   int clines = 0;
-  URL *curr = (URL *) malloc (sizeof (URL));
-  URL *head = curr;
+  URL *curr;
+  URL *head = NULL;
   int i;
   
   while ((chars_read = getline (&input_line, &char_size, fd)) != -1)
     {
+      curr = (URL *) malloc (sizeof (URL));
+      memset ((void *) curr, '\0', sizeof (URL));
+      curr->dir = (char *) malloc (sizeof (char)*2048);
+      memset ((void *) curr->dir, '\0', sizeof (char) * 2048);
+      curr->domain = (char *) malloc (sizeof (char)*1024);
+      memset ((void *) curr->domain, '\0', sizeof (char) * 1024);      
       // eliminar caracter \n 
       input_line[chars_read - 1] = '\0';
       strcpy (curr->dir, input_line);
@@ -24,8 +30,8 @@ parseFile (FILE* fd)
             break;
 
       strncpy (curr->domain, input_line + 7, (i-7));
-      curr->next = (URL *) malloc (sizeof (URL));
-      curr = curr->next;
+      curr->next = head;
+      head = curr;
       clines++;
     }
   
@@ -43,13 +49,16 @@ void
 free_URL (URL *url_list) 
 {
   URL *tmp = url_list;
-  while (tmp->next != NULL)
+  URL *aux;
+  while (tmp != NULL)
     {
-      url_list = tmp->next;
+      aux = tmp->next;
+      freeaddrinfo (tmp->netInfo);
+      free (tmp->domain);
+      free (tmp->dir);
       free (tmp);
-      tmp = url_list;
+      tmp = aux;
     }
-  free (tmp);
   return;
 }
 
