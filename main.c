@@ -10,6 +10,7 @@
 #include <pthread.h>
 
 
+#include "globals.h"
 #include "data_structures.h"
 #include "entry_list.h"
 #include "fetcher.h"
