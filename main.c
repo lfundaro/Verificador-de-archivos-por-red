@@ -7,6 +7,7 @@
 #include <netdb.h>
 #include <sys/types.h>
 #include <signal.h>
+#include <pthread.h>
 
 
 #include "data_structures.h"
@@ -15,6 +16,7 @@
 #include "parser.h"
 #include "differ.h"
 #include "utils.h"
+#include "dispatcher.h"
 
 #define DEFAULT_TIME 30
 #define EXIT_FAILURE 1
@@ -22,13 +24,10 @@
 #define false 0
 #define true 1
 
-
-void 
-mensaje ()
-{
-  printf (" Hola, soy el hijo\n");
-  return;
-}
+int goDown = 0;
+int goWork = 0;
+int taken = 0;
+int sdown = 0;
 
 void 
 bye (FILE *fd, URL *urlList)
@@ -37,6 +36,42 @@ bye (FILE *fd, URL *urlList)
     fclose (fd);
   if (urlList != NULL)
     free_URL (urlList);
+  return;
+}
+
+void 
+SIGALRM_control ()
+{
+  while (true)
+    {
+      if (!taken)
+        {
+          taken = 1;
+          goWork = 1;
+          printf (" Hola, soy el hijo\n");
+          taken = 0;
+          return;
+        }
+    }
+}
+
+void *
+worker (void *arg)
+{
+  workerInfo *p = (workerInfo *) arg;
+  while (!sdown)
+    {
+      if (!goDown) // hilo no suspendido 
+        {
+          if (goWork)
+            {
+              // llamada a dispatcher
+              dispatcher (p->urlList);
+              goWork = 0;
+              alarm (p->time);
+            }
+        }
+    }
   return;
 }
 
@@ -63,11 +98,10 @@ main (int argc, char **argv)
   unsigned int time = -1;
   char dir[2048];
   char *file = NULL;
-  FILE *fd = NULL;
-  URL* urlList;
   char entry;
-  pid_t pID; // PID para fetcher
-  int childExitStatus;
+  FILE *fd = NULL;
+  URL *urlList;
+    
   
   opterr = 0;
 
@@ -100,10 +134,11 @@ main (int argc, char **argv)
       case '?':
         if (optopt == 'a' || optopt == 'd' || optopt == 't')
           fprintf (stderr, "La opción -%c requiere un argumento. \n", optopt);
-        else if (isprint (optopt))
+        else if (isprint (optopt)) 
           fprintf (stderr, "Opción desconocida `-%c'. \n", optopt);
         else 
           fprintf (stderr, "Caracter de opción desconocido `\\x%x'. \n", optopt);
+        fclose (fd);
         usage (EXIT_FAILURE);
         break;
         
@@ -118,80 +153,102 @@ main (int argc, char **argv)
   for (index = optind; index < argc; index++) 
     {
       printf ("%s no es una opción\n", argv[index]);
-      bye (fd, urlList);
+      bye (fd, NULL);
       usage (EXIT_FAILURE);
     }
   
   /********* END Manejo de Opciones por cónsola ******/
 
   if (time == -1)
-    time = DEFAULT_TIME; 
+    time = DEFAULT_TIME;
 
   urlList  = parseFile(fd);
-
+  
+  resolve (urlList);
+  
   // opción de directorio y archivo activas
   if (dir_enabled && file_enabled)
     if (file_lookup(dir, urlList) != 0) 
       {
         fprintf (stderr, "El directorio %s no existe en el archivo %s.\n", 
                  dir, file);
-        fclose (fd);
-        free_URL (urlList);
+        bye (fd, urlList);
         exit (EXIT_FAILURE);
       }
+
+
+  /***** BEGIN threads *****/
+
+  /* sigset_t mask; */
+  /* sigemptyset (&mask); */
+  /* sigaddset (&mask, SIGALRM); */
+  /* sigaddset (&mask, SIGTERM); */
+  int tStatus;
+  // Creación de hilo worker
+  pthread_t workerPID;
   
-  pID = fork();
-  
-  if (pID == 0) // código del hijo
+  // Preparar argumento para worker
+
+  struct workerInfo *wi = (workerInfo *) malloc (sizeof (workerInfo));
+  wi->time = time;
+  wi->urlList = urlList;
+
+  tStatus = pthread_create (&workerPID, NULL, worker, (void *) wi);
+
+  signal (SIGALRM, SIGALRM_control);
+  alarm (time); // primera llamada al worker
+  // Código de hilo principal
+  printf ("Comienzo del programa: \n");
+  while (true)
     {
-      // Bind de función a señal SIGALRM
-      signal (SIGALRM, mensaje);
-      while (true)
+      entry  = getchar ();
+      puts("");
+      switch (entry)
         {
-          alarm (time);
-          pause ();
-        }
-    }
-  else if (pID < 0) // Error al hacer fork
-    {
-      perror("fork: ");
-      bye (fd, urlList);
-      exit (EXIT_FAILURE);
-    }
-  else 
-    {
-      // Código del padre
-      printf ("Comienzo del programa: \n");
-      while (true)
-        {
-          entry = getchar();
-          puts("");
-          switch (entry)
-            {
-            case 'p':
-              puts ("pause the program");
-              break;
-            case 'c':
-              puts ("continue program");
-              break;
-            case 's':
-              puts ("terminate program");
-              bye (fd, urlList);
-              sleep (2);
-              exit (EXIT_SUCESS);
-            default:
-              if (entry != '\n')
-                puts("Instrucción desconocida");
-            }
+        case 'p':
+          puts ("pause the program");
+          while (true)
+              if (!taken) 
+                {
+                  taken = 1;
+                  goDown = 1;
+                  taken = 0;
+                  break;
+                }
+          break;
+        case 'c':
+          puts ("continue program");
+          while (true)
+            if (!taken)
+              {
+                taken = 1;
+                goDown = 0;
+                taken = 0;
+                break;
+              }
+          break;
+        case 's':
+          puts ("terminate program");
+          sdown = 1;
+          pthread_join (workerPID, NULL);
+          sleep (2);
+          bye (fd, urlList);
+          free (wi);
+          exit (EXIT_SUCESS);
+        default:
+          if (entry != '\n')
+            puts("Instrucción desconocida");
         }
     }
 
-  bye (fd, urlList);
-  /* if (fd)  */
-  /*   fclose (fd);    */
+  /***** END threads *****/
 
-  /* free_URL (urlList);   */
+
+  bye (fd, NULL);
   return 0;
+
 }
+
+
 
 
