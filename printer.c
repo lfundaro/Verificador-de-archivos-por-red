@@ -6,7 +6,7 @@ void print(struct fileEntry e)
 {
   if (e.dt == NODIFF)
     {
-      printf("Nueva entrada: %s\n",e.path);//(FLAG)
+      printf("Nueva entrada: %s%s\n",e.URL,e.path);//(FLAG)
       return;
     }
   else
@@ -25,5 +25,6 @@ void printer(entry_node* diffs){
   //Iterar sobre las diferencias
   for(curr; curr != NULL; curr = curr->next)
     print(curr->e);
+
   return;
 }
