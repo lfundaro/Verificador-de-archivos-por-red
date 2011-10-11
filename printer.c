@@ -6,15 +6,15 @@ void print(struct fileEntry e)
 {
   if (e.dt == NODIFF)
     {
-      printf("Nueva entrada: %s%s ~ %s ~ %s\n",e.URL,e.path,e.date,e.size);//(FLAG)
+      //      printf("Nueva entrada: %s%s ~ %s ~ %s\n",e.URL,e.path,e.date,e.size);//(FLAG)
       return;
     }
   else
     {
       if (e.dt == NEW)
-        printf ("Se encontró nuevo archivo: %s\n", e.path);
+        printf ("Se encontró nuevo archivo: %s%s\n",e.URL, e.path);
       else // Archivo cambio
-        printf ("Archivo modificado: %s\n", e.path);
+        printf ("Archivo modificado: %s%s\n", e.URL, e.path);
     }
   return;
 }
