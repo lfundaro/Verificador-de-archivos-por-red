@@ -16,7 +16,7 @@ parser(char** pgs, unsigned short npgs){
 
     //Parsear pagina
     int retc = parse(pgs[i],&entries);
-    printf("parsed html %d\n", i);//(FLAG)
+    //    printf("parsed html %d\n", i);//(FLAG)
 
     //Salir si hubo un error
     if(retc){
@@ -65,7 +65,7 @@ parse(char* pg, struct entry_node** list){
     //A~nadir la nueva entrada
     fileEntry e = parse_entry(pg_ptr,(*base_url),(*path),matches);
     *list = add_head(e,*list);
-    printf("%s\n",e.path);//(FLAG)
+    //   printf("%s\n",e.path);//(FLAG)
 
     //regex.h devuelve el primer match en el string.
     //Esto mueve el apuntador de la pagina al final de
@@ -116,7 +116,7 @@ match_entry(char* pg_ptr,regmatch_t** matches,regex_t** cpattern){
   //Ejecutar la expresion regular
   ret = regexec((*cpattern),pg_ptr,(1+REG_NMATCHES),(*matches),0);
   if(ret == REG_NOMATCH){
-    printf("Nothing found!!!\n");//(FLAG)
+    //    printf("Nothing found!!!\n");//(FLAG)
     return 0;//Retornar fracaso
   }
   //printf("Something found!!!\n");//(FLAG)
