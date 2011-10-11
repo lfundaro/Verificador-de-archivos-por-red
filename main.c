@@ -58,7 +58,6 @@ SIGALRM_control ()
         {
           taken = 1;  // Bloquear acceso de variable goWork
           goWork = 1;
-          printf (" Hola, soy el hijo\n");
           taken = 0;
           return;
         }
@@ -115,6 +114,7 @@ main (int argc, char **argv)
   char entry;
   FILE *fd = NULL;
   URL *urlList;
+  hcreate (200);
     
   
   opterr = 0;
