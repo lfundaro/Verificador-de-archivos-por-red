@@ -23,6 +23,13 @@ struct entry_node{
   entry_node* next;
 };
 
+
+// La estructura URL contiene los siguientes elementos:
+//     - dir: almacena el nombre del directorio con URL completo.
+//            Ejemplo: http://example.com/dir1              
+//     - domain: almacena el dominio del URL. (example.com)
+//     - netInfo: almacena la dirección IP que corresponde al dominio
+//     - next: próximo elemento de la lista URL
 struct URL typedef URL;
 
 struct URL
@@ -33,6 +40,9 @@ struct URL
   struct URL *next;
 };
 
+// La estructura workerInfo se utiliza para solucionar 
+// la limitante que tienen las funciones threads en C 
+// las cuales se les pueden pasar un único argumento.
 struct workerInfo typedef workerInfo;
 
 struct workerInfo 
