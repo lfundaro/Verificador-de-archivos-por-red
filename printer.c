@@ -6,7 +6,7 @@ void print(struct fileEntry e)
 {
   if (e.dt == NODIFF)
     {
-      printf("Nueva entrada: %s%s\n",e.URL,e.path);//(FLAG)
+      printf("Nueva entrada: %s%s ~ %s ~ %s\n",e.URL,e.path,e.date,e.size);//(FLAG)
       return;
     }
   else

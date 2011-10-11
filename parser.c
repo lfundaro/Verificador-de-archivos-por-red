@@ -156,13 +156,13 @@ parse_entry(char* pg_ptr, char* base_url, char* path,
   }
   e.date = entry_date;
 
-  /* /\***Recuperar tama~no***\/ */
-  /* char* entry_size = get_data(REG_SIZE_POS,pg_ptr,matches); */
-  /* if(entry_date == (char*)-1){ */
-  /*   fprintf(stdout,"Error: entrada sin tama~no\n"); */
-  /*   exit(EXIT_FAILURE); */
-  /* }   */
-  /* e.size = entry_size; */
+  /***Recuperar tama~no***/
+  char* entry_size = get_data(REG_SIZE_POS,pg_ptr,matches);
+  if(entry_date == (char*)-1){
+    fprintf(stdout,"Error: entrada sin tama~no\n");
+    exit(EXIT_FAILURE);
+  }
+  e.size = entry_size;
 
   /***Agregar URL***/
   e.URL = (char*)malloc(sizeof(char)*(strlen(base_url)+1));//+1 por el byte de terminacion

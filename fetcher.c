@@ -85,7 +85,7 @@ int fetch(URL* url, char** pg_ptr){
   strcat(http_get,aux_get_second);
   int get_len = strlen(http_get);
 
-  //printf("%s\n",http_get);(FLAG)
+  printf("%s\n",http_get);//(FLAG)
 
   //Enviar paquete HTTP
   ret = write(sock_des, (void*)http_get, get_len);
@@ -104,6 +104,7 @@ int fetch(URL* url, char** pg_ptr){
   printf("%s\n",*(pg_ptr));
 
   free(url_header);
+  free(http_get);
 
   //Retornar exito
   return 0;
