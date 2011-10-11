@@ -4,8 +4,7 @@ semantic.cache
 *.*~
 main 
 verific
-#*
-.#*
+.\#*
 nul
 givnaarial
 test.c
@@ -14,3 +13,4 @@ prueba.txt
 TODO
 preguntas
 .nfs*
+\#*
