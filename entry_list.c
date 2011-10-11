@@ -57,10 +57,9 @@ void free_list(struct entry_node* en){
     if(kill->e.size != NULL)
       free(kill->e.size);
 
-    free(kill);
-
-    kill = next;
     next = kill->next;
+    free(kill);
+    kill = next;
   }
 
   return;

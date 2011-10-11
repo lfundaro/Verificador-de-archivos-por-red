@@ -43,9 +43,11 @@ int fetch(URL* url, char** pg_ptr){
 
   //Cabecera que sera a~nadida al tope del HTML descargado
   //para que el parser sepa el URL de las entradas
-  int url_header_sz = strlen(url->domain)+strlen(url->dir)+1;
+  const char* protocol = "http://";
+  int url_header_sz = strlen(protocol) + strlen(url->domain) + strlen(url->dir) + 1;
   char* url_header = (char*)malloc(sizeof(char)*(url_header_sz));
-  strcpy(url_header,url->domain);
+  strcpy(url_header,protocol);
+  strcat(url_header,url->domain);
   strcat(url_header,url->dir);
   url_header[url_header_sz-1] = '\0';
 
@@ -71,16 +73,27 @@ int fetch(URL* url, char** pg_ptr){
   }
 
   //Construir instruccion HTTP.
-  const char* http_get = "GET /~german/ HTTP/1.0\r\n\r\n";//(BUG)
-  int getlen = strlen(http_get);
+  const char* aux_get_first = "GET http://";
+  const char* aux_get_second = " HTTP/1.0\r\n\r\n";
+  int url_len = strlen(url->domain) + strlen(url->dir);
+  int aux_get_len = strlen(aux_get_first) + strlen(aux_get_second);
+
+  char* http_get = (char*)malloc(sizeof(char)*(url_len + aux_get_len +1));
+  strcpy(http_get,aux_get_first);
+  strcat(http_get,url->domain);
+  strcat(http_get,url->dir);
+  strcat(http_get,aux_get_second);
+  int get_len = strlen(http_get);
+
+  printf("%s\n",http_get);//(FLAG)
 
   //Enviar paquete HTTP
-  ret = write(sock_des, (void*)http_get, getlen);
+  ret = write(sock_des, (void*)http_get, get_len);
   if(ret < 0){
     printf("Error escribiendo en el socket\n");
     exit(1);
   }
-  if(ret < getlen){
+  if(ret < get_len){
     printf("Error, transmision incompleta/fallida\n");
     exit(1);
   }
@@ -91,6 +104,7 @@ int fetch(URL* url, char** pg_ptr){
   printf("%s\n",*(pg_ptr));
 
   free(url_header);
+  free(http_get);
 
   //Retornar exito
   return 0;

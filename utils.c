@@ -82,6 +82,7 @@ init_entry(fileEntry* e){
   e->path = NULL;
   e->URL = NULL;
   e->date = NULL; 
+  e->size = NULL; 
   e->dateI = 0;
   e->dt = NODIFF;
 }

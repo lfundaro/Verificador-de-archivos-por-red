@@ -45,8 +45,5 @@ entry_node* differ(entry_node* entries){
     }
   }
 
-  //Liberar memoria
-  free_list(entries);
-
   return diffs;
 }
