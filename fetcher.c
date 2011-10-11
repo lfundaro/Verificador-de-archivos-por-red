@@ -24,7 +24,7 @@ char** fetcher(URL* url_list, int* nurls){
   for(li = url_list; li != NULL; li = li->next){
     //descargar pagina, se guarda en 'pgs'
     int retc = fetch(li,&(pgs[i]));
-    printf("fetched webpage %d\n",i);
+    //    printf("fetched webpage %d\n",i); // (FLAG)
 
     if (retc){
       exit(1);//salir si hubo un error
@@ -43,12 +43,9 @@ int fetch(URL* url, char** pg_ptr){
 
   //Cabecera que sera a~nadida al tope del HTML descargado
   //para que el parser sepa el URL de las entradas
-  const char* protocol = "http://";
-  int url_header_sz = strlen(protocol) + strlen(url->domain) + strlen(url->dir) + 1;
+  int url_header_sz = strlen(url->dir) + 1;
   char* url_header = (char*)malloc(sizeof(char)*(url_header_sz));
-  strcpy(url_header,protocol);
-  strcat(url_header,url->domain);
-  strcat(url_header,url->dir);
+  strcpy(url_header,url->dir);
   url_header[url_header_sz-1] = '\0';
 
   //Direccion de la pagina
@@ -73,19 +70,18 @@ int fetch(URL* url, char** pg_ptr){
   }
 
   //Construir instruccion HTTP.
-  const char* aux_get_first = "GET http://";
+  const char* aux_get_first = "GET ";
   const char* aux_get_second = " HTTP/1.0\r\n\r\n";
-  int url_len = strlen(url->domain) + strlen(url->dir);
+  int url_len =  strlen(url->dir);
   int aux_get_len = strlen(aux_get_first) + strlen(aux_get_second);
 
   char* http_get = (char*)malloc(sizeof(char)*(url_len + aux_get_len +1));
   strcpy(http_get,aux_get_first);
-  strcat(http_get,url->domain);
   strcat(http_get,url->dir);
   strcat(http_get,aux_get_second);
   int get_len = strlen(http_get);
 
-  printf("%s\n",http_get);//(FLAG)
+  //  printf("%s\n",http_get);//(FLAG)
 
   //Enviar paquete HTTP
   ret = write(sock_des, (void*)http_get, get_len);
@@ -101,7 +97,7 @@ int fetch(URL* url, char** pg_ptr){
   download_page(pg_ptr,sock_des,url_header,url_header_sz);
 
   //(FLAG) Imprimir pagina descargada
-  printf("%s\n",*(pg_ptr));
+  //  printf("%s\n",*(pg_ptr));
 
   free(url_header);
   free(http_get);
