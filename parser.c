@@ -7,7 +7,7 @@
 entry_node*
 parser(char** pgs, unsigned short npgs){
 
-  //Lista de entradas de los directorios
+  //Lista de entradas a retornar
   entry_node* entries = NULL;
   
   int i; //Variable de iteracion
@@ -16,7 +16,7 @@ parser(char** pgs, unsigned short npgs){
 
     //Parsear pagina
     int retc = parse(pgs[i],&entries);
-    printf("parsed html %d\n", i);
+    printf("parsed html %d\n", i);//(FLAG)
 
     //Salir si hubo un error
     if(retc){
@@ -24,12 +24,12 @@ parser(char** pgs, unsigned short npgs){
     }
 
     /*
+    //concat(temp,entries);
+    //free(temp);
       En caso de que quiera hacer esto con threads,
       no quiero q 'parse' cambie, asi q le paso una
       lista temporal y manejo la concurrencia en parser.
     */
-    //concat(temp,entries);
-    //free(temp);
   }
 
   //Liberar memoria
@@ -44,68 +44,72 @@ parser(char** pgs, unsigned short npgs){
 //Funcion que parsea una pagina
 int
 parse(char* pg, struct entry_node** list){
-  char** base_url_ptr = (char**)malloc(sizeof(char*));
-  char** path_ptr = (char**)malloc(sizeof(char*));
-  (*base_url_ptr) = NULL;
-  (*path_ptr) = NULL;
-  parse_url(pg,path_ptr,base_url_ptr);
-  
+  char** base_url = (char**)malloc(sizeof(char*));
+  char** path = (char**)malloc(sizeof(char*));
+  (*base_url) = NULL;
+  (*path) = NULL;
+  parse_url(pg,path,base_url);
+
   //Arreglo con desplazamientos de los matches
   //con respecto al comienzo del HTTP
-  regmatch_t** matches_ptr = (regmatch_t**)malloc(sizeof(regmatch_t*));
-  (*matches_ptr) = NULL;
+  regmatch_t** matches = (regmatch_t**)malloc(sizeof(regmatch_t*));
+  (*matches) = NULL;
 
-  regex_t** cpattern_ptr = (regex_t**)malloc(sizeof(regex_t*));
-  (*cpattern_ptr) = NULL;
+  regex_t** cpattern = (regex_t**)malloc(sizeof(regex_t*));
+  (*cpattern) = NULL;
 
   //Mientras halla entradas
-  while(match_entry(pg,matches_ptr,cpattern_ptr)){
+  while(match_entry(pg,matches,cpattern)){
 
     //A~nadir la nueva entrada
-    fileEntry e = parse_entry(pg,(*base_url_ptr),(*path_ptr),matches_ptr);
+    fileEntry e = parse_entry(pg,(*base_url),(*path),matches);
     *list = add_head(e,*list);
 
     //regex.h devuelve el ultimo match en el string.
     //Esto 'corta' el string al principio del match
     //actual para que se puedan detectar otras entradas. 
-    pg[(*matches_ptr)[0].rm_so] = '\0';
+    pg[(*matches)[0].rm_so] = '\0';
   }
 
   //Liberar memoria
-  if ((*matches_ptr) != NULL){
-    free(*matches_ptr);
+  if ((*matches) != NULL){
+    free(*matches);
   }
-  free(matches_ptr);
+  free(matches);
 
-  if ((*cpattern_ptr) != NULL){
-    free(*cpattern_ptr);
+  if ((*cpattern) != NULL){
+    regfree(*cpattern);
+    free(*cpattern);
   }
-  free(cpattern_ptr);
-  
+  free(cpattern);
+
+  free(*base_url);
+  free(base_url);
+  free(*path);
+  free(path);
+
   return 0; //Retornar exito
 }
 
 //Funcion que hace match con la ultima entrada del HTML
 int
-match_entry(char* pg,regmatch_t** matches_ptr,regex_t** cpattern_ptr){
-  regmatch_t* matches = (*matches_ptr);
-  regex_t* cpattern = (*cpattern_ptr);
+match_entry(char* pg,regmatch_t** matches,regex_t** cpattern){
   int ret; //Para guardar valores de retorno
   const char* pattern = PATTERN;
 
   //Alocar los apuntadores que sean nulos
-  if(matches == NULL){
-    matches = (regmatch_t*)malloc(sizeof(regmatch_t)*1+REG_NMATCHES);
+  if((*matches) == NULL){
+    (*matches) = (regmatch_t*)malloc(sizeof(regmatch_t)*(1+REG_NMATCHES));
   }
-  if(cpattern == NULL){
-    cpattern = (regex_t*)malloc(sizeof(regex_t));
+  if((*cpattern) == NULL){
+    (*cpattern) = (regex_t*)malloc(sizeof(regex_t));
     //Compilar la expresion regular
-    ret = regcomp(cpattern,pattern,REG_EXTENDED);
+    ret = regcomp((*cpattern),pattern,REG_EXTENDED);
     handle_regex_errors(ret);
   }
 
   //Ejecutar la expresion regular
-  ret = regexec(cpattern,pg,4,matches,0);
+  ret = regexec((*cpattern),pg,(1+REG_NMATCHES),(*matches),0);
   if(ret == REG_NOMATCH){
     printf("Nothing found!!!\n");//(FLAG)
     return 0;//Retornar fracaso
@@ -119,42 +123,46 @@ match_entry(char* pg,regmatch_t** matches_ptr,regex_t** cpattern_ptr){
 //Funcion que construye un 'struct fileEntry' a partir de una entrada en el HTML
 fileEntry
 parse_entry(char* pg, char* base_url, char* path,
-	    regmatch_t** matches_ptr){
+	    regmatch_t** matches){
   fileEntry e;
   init_entry(&e);
   
   /***Recuperar nombre***/
-  char* name = get_data(REG_FILENAME_POS,pg,matches_ptr);
+  char* name = get_data(REG_FILENAME_POS,pg,matches);
   if(name == (char*)-1){
     fprintf(stdout,"Error: entrada sin nombre\n");
     exit(EXIT_FAILURE);
   }  
-  char* entry_path = (char*)malloc(sizeof(char)*(strlen(path)+strlen(name)+1));
+
+  int entry_path_sz = strlen(base_url) + strlen(path) + strlen(name) + 1;
+  char* entry_path = (char*)malloc(sizeof(char)*(entry_path_sz));
+  strcpy(entry_path,base_url);
   strcat(entry_path,path);
   strcat(entry_path,name);
+  entry_path[entry_path_sz - 1] = '\0';
   e.path = entry_path;
   if(name != NULL){
     free(name);
   }
 
   /***Recuperar fecha***/
-  char* entry_date = get_data(REG_DATE_POS,pg,matches_ptr);
+  char* entry_date = get_data(REG_DATE_POS,pg,matches);
   if(entry_date == (char*)-1){
     fprintf(stdout,"Error: entrada sin fecha\n");
     exit(EXIT_FAILURE);
-  }  
-  e.date = entry_path;
+  }
+  e.date = entry_date;
 
-  /***Recuperar tama~no***/
-  char* entry_size = get_data(REG_SIZE_POS,pg,matches_ptr);
-  if(entry_date == (char*)-1){
-    fprintf(stdout,"Error: entrada sin tama~no\n");
-    exit(EXIT_FAILURE);
-  }  
-  e.size = entry_size;
+  /* /\***Recuperar tama~no***\/ */
+  /* char* entry_size = get_data(REG_SIZE_POS,pg,matches); */
+  /* if(entry_date == (char*)-1){ */
+  /*   fprintf(stdout,"Error: entrada sin tama~no\n"); */
+  /*   exit(EXIT_FAILURE); */
+  /* }   */
+  /* e.size = entry_size; */
 
   /***Agregar URL***/
-  e.URL = (char*)malloc(sizeof(char)*strlen(base_url));
+  e.URL = (char*)malloc(sizeof(char)*(strlen(base_url)+1));//+1 por el byte de terminacion
   strcpy(e.URL,base_url);
 
   return e;
@@ -162,7 +170,7 @@ parse_entry(char* pg, char* base_url, char* path,
 
 //Funcion que parsea la URL agregada por fetcher al principio de cada HTML
 void
-parse_url(char* pg, char** path_ptr, char** base_url_ptr){
+parse_url(char* pg, char** path, char** base_url){
   int url_len = 0;
   int ret;//Para guardar valores de retorno
   char* temp = pg;
@@ -190,7 +198,7 @@ parse_url(char* pg, char** path_ptr, char** base_url_ptr){
   handle_regex_errors(ret);
 
   //Ejecutar la expresion regular
-  ret = regexec(cpattern,url,4,matches,0);
+  ret = regexec(cpattern,url,3,matches,0);
   if(ret == REG_NOMATCH){
     fprintf(stdout,"No se encontro URL al principio del HTML\n");
     exit(EXIT_FAILURE);
@@ -198,8 +206,6 @@ parse_url(char* pg, char** path_ptr, char** base_url_ptr){
   handle_regex_errors(ret);
 
   //Guardar URL y path
-  char* base_url = (*base_url_ptr);
-  char* path = (*path_ptr);
   int start = 0,end = 0;
   int size = 0;
 
@@ -211,9 +217,9 @@ parse_url(char* pg, char** path_ptr, char** base_url_ptr){
     fprintf(stdout,"error en parser: dominio no encontrado\n");
     exit(EXIT_FAILURE);
   }
-  base_url = (char*)malloc(sizeof(char)*size);
-  strncpy(base_url,(url+start),size);
-  base_url[size-1] = '\0';
+  (*base_url) = (char*)malloc(sizeof(char)*size);
+  strncpy((*base_url),(url+start),size);
+  (*base_url)[size-1] = '\0';
 
   //Guardar path
   start = matches[2].rm_so;
@@ -223,20 +229,25 @@ parse_url(char* pg, char** path_ptr, char** base_url_ptr){
     fprintf(stdout,"error en parser: PATH no encontrado\n");
     exit(EXIT_FAILURE);
   }
-  path = (char*)malloc(sizeof(char)*size);
-  strncpy(path,(url+start),size);
-  path[size-1] = '\0';
-  
+  (*path) = (char*)malloc(sizeof(char)*size);
+  strncpy((*path),(url+start),size);
+  (*path)[size-1] = '\0';
+
+  free(url);
+  free(matches);
+  regfree(cpattern);
+  free(cpattern);
+
   return;
 }
 
 //Funcion que recupera un subcampo de un match de la expresion regular
 char*
-get_data(int data_pos,char* pg,regmatch_t** matches_ptr){
+get_data(int data_pos,char* pg,regmatch_t** matches){
 
   char *data = NULL;
-  int start = (*matches_ptr)[data_pos].rm_so;
-  int end = (*matches_ptr)[data_pos].rm_eo;
+  int start = (*matches)[data_pos].rm_so;
+  int end = (*matches)[data_pos].rm_eo;
   int data_sz = end-start+1;
 
   //En caso de que el dato no halla sido encontrado

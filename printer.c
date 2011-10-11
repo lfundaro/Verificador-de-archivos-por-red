@@ -6,7 +6,7 @@ void print(struct fileEntry e)
 {
   if (e.dt == NODIFF)
     {
-      printf("Nueva entrada!!!!\n");//(FLAG)
+      printf("Nueva entrada: %s\n",e.path);//(FLAG)
       return;
     }
   else

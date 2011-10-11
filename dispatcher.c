@@ -16,7 +16,7 @@ dispatcher(URL* url_list){
   printf("DIFFER DONE\n");
 
   updater(diffs);
-  printer (diffs);
-  free_list (diffs);
+  printer(diffs);
+  free_list(diffs);
   return;
 }

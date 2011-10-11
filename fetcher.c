@@ -7,7 +7,15 @@
 char** fetcher(URL* url_list, int* nurls){
   //variables de iteracion
   URL* li = NULL;
+  int i = 0;
+
+  //Numero de paginas a descargar
   (*nurls) = 0;
+  
+  //Contar el numero de paginas
+  for(li = url_list; li != NULL; li = li->next){
+    (*nurls)++;
+  }
 
   //reservar espacio para apuntadores a las paginas
   char** pgs = (char**)malloc(sizeof(char*)*(*nurls)); 
@@ -15,13 +23,13 @@ char** fetcher(URL* url_list, int* nurls){
   //iterar por las direcciones
   for(li = url_list; li != NULL; li = li->next){
     //descargar pagina, se guarda en 'pgs'
-    int retc = fetch(li,&(pgs[(*nurls)]));
-    printf("fetched webpage %d\n",(*nurls));
+    int retc = fetch(li,&(pgs[i]));
+    printf("fetched webpage %d\n",i);
 
     if (retc){
       exit(1);//salir si hubo un error
     }
-    ++(*nurls);
+    ++i;
   }
 
   return pgs;
@@ -49,7 +57,7 @@ int fetch(URL* url, char** pg_ptr){
 		    pg_addr.ai_socktype,
 		    pg_addr.ai_protocol);
   if (sock_des == -1){
-    printf("Error creando el socket");
+    printf("Error creando el socket\n");
     exit(1);
   }
 
@@ -58,22 +66,22 @@ int fetch(URL* url, char** pg_ptr){
 		pg_addr.ai_addr, 
 		pg_addr.ai_addrlen);
   if(ret){
-    printf("Error conectandose");
+    printf("Error conectandose\n");
     exit(1);
   }
 
   //Construir instruccion HTTP.
-  const char* http_get = "GET /~jorge/ HTTP/1.0\r\n\r\n";
+  const char* http_get = "GET /~german/ HTTP/1.0\r\n\r\n";//(BUG)
   int getlen = strlen(http_get);
 
   //Enviar paquete HTTP
   ret = write(sock_des, (void*)http_get, getlen);
   if(ret < 0){
-    printf("Error escribiendo en el socket");
+    printf("Error escribiendo en el socket\n");
     exit(1);
   }
   if(ret < getlen){
-    printf("Error, transmision incompleta/fallida");
+    printf("Error, transmision incompleta/fallida\n");
     exit(1);
   }
 
@@ -81,6 +89,8 @@ int fetch(URL* url, char** pg_ptr){
 
   //(FLAG) Imprimir pagina descargada
   printf("%s\n",*(pg_ptr));
+
+  free(url_header);
 
   //Retornar exito
   return 0;

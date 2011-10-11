@@ -43,9 +43,25 @@ void free_list(struct entry_node* en){
   entry_node *kill = en;
   entry_node *next = NULL;
   
-  while(next != NULL){
+  while(kill != NULL){
+
+    if(kill->e.path != NULL)
+      free(kill->e.path);
+
+    if(kill->e.URL != NULL)
+      free(kill->e.URL);
+
+    if(kill->e.date != NULL)
+      free(kill->e.date);
+
+    if(kill->e.size != NULL)
+      free(kill->e.size);
+
+    free(kill);
+
     kill = next;
     next = kill->next;
-    free(kill);
   }
+
+  return;
 }

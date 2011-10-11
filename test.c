@@ -30,26 +30,29 @@ main(){
   //at it's default value. The correct behaviour would
   //be to use 'getprotoent'.
 
-  ret = getaddrinfo("localhost","http",&hints,&addrs);;
+  ret = getaddrinfo("cancer.ac.labf.usb.ve","http",&hints,&addrs);;
   if (ret){
     printf("Error getting info about host");
     exit(1);
   }
 
   URL* url_list = (URL*)malloc(sizeof(URL));
-  url_list->domain = "http://localhost";
-  url_list->dir = "/~jorge/";
+  url_list->domain = "http://cancer.ac.labf.usb.ve";
+  url_list->dir = "/~german/";
   url_list->netInfo = &(addrs[0]);
   url_list->next = NULL;
 
+  printf("FETCHER START\n");
   char** pgs = fetcher(url_list,&naddrs);
-  printf("FETCHER DONE\n");
+  printf("FETCHER DONE\n\n");
 
+  printf("PARSER START\n");
   entry_node* entries = parser(pgs,naddrs);
-  printf("PARSER DONE\n");
+  printf("PARSER DONE\n\n");
 
+  printf("PRINTER START\n");
   printer(entries);
-  printf("PRINTER DONE\n");
+  printf("PRINTER DONE\n\n");
 
   return 0;
 }
