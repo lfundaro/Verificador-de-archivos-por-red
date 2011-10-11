@@ -1,4 +1,3 @@
-
 #include <ctype.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -25,11 +24,16 @@
 #define false 0
 #define true 1
 
+// Variables de control para threads
 int goDown = 0;
 int goWork = 0;
 int taken = 0;
 int sdown = 0;
 
+
+// Libera recursos:
+//    - Lista enlazada de estructuras URL.
+//    - Cierra file descriptor.
 void 
 bye (FILE *fd, URL *urlList)
 {
@@ -40,6 +44,11 @@ bye (FILE *fd, URL *urlList)
   return;
 }
 
+
+// Función que activa la bandera goWork
+// para que el thread realice la conexión 
+// con el/los servidor/es especificado/s en 
+// la línea de comandos.
 void 
 SIGALRM_control ()
 {
@@ -47,7 +56,7 @@ SIGALRM_control ()
     {
       if (!taken)
         {
-          taken = 1;
+          taken = 1;  // Bloquear acceso de variable goWork
           goWork = 1;
           printf (" Hola, soy el hijo\n");
           taken = 0;
@@ -56,6 +65,8 @@ SIGALRM_control ()
     }
 }
 
+// Función del thread que chequea si existen archivos 
+// nuevos o modificados en el/los servidor/es. 
 void *
 worker (void *arg)
 {
@@ -69,13 +80,14 @@ worker (void *arg)
               // llamada a dispatcher
               dispatcher (p->urlList);
               goWork = 0;
-              alarm (p->time);
+              alarm (p->time); // Reactivar señal SIGALRM
             }
         }
     }
   return;
 }
 
+// Función que explica el uso del programa.
 int 
 usage (int status) 
 {
@@ -86,6 +98,7 @@ usage (int status)
    -a      archivo con lista de directorios a verificar. \n");
   exit (status);
 }
+
 
 int 
 main (int argc, char **argv) 
@@ -162,14 +175,35 @@ main (int argc, char **argv)
 
   if (time == -1)
     time = DEFAULT_TIME;
-
-  urlList  = parseFile(fd);
   
+  if (fd != NULL) // extraer información útil de archivo
+    urlList  = parseFile(fd);
+  else // poner información de directorio en urlList 
+    {
+      urlList = (URL *) malloc (sizeof (URL));
+      memset ((void *) urlList, '\0', sizeof (URL));
+      urlList->dir = (char *) malloc (sizeof (char)*2048);
+      memset ((void *) urlList->dir, '\0', sizeof (char) * 2048);
+      urlList->domain = (char *) malloc (sizeof (char)*1024);
+      memset ((void *) urlList->domain, '\0', sizeof (char) * 1024);      
+      strcpy (urlList->dir, dir);
+      // extracción de dominio en URL
+      int i;
+      for (i = 7; i < strlen (dir) ; i++)
+        if (strncmp ("/", dir + i, 1) == 0)
+            break;
+
+      strncpy (urlList->domain, dir + 7, (i-7));
+      urlList->next = NULL;
+    }
+  
+  // Resolución DNS
   resolve (urlList);
   
   // opción de directorio y archivo activas
   if (dir_enabled && file_enabled)
-    if (file_lookup(dir, urlList) != 0) 
+    // Chequear si directorio dir existe en archivo
+    if (file_lookup(dir, urlList) != 0)  
       {
         fprintf (stderr, "El directorio %s no existe en el archivo %s.\n", 
                  dir, file);
@@ -180,15 +214,10 @@ main (int argc, char **argv)
 
   /***** BEGIN threads *****/
 
-  /* sigset_t mask; */
-  /* sigemptyset (&mask); */
-  /* sigaddset (&mask, SIGALRM); */
-  /* sigaddset (&mask, SIGTERM); */
   int tStatus;
-  // Creación de hilo worker
-  pthread_t workerPID;
+  pthread_t workerPID; // hilo worker
   
-  // Preparar argumento para worker
+  // Preparar argumento para la función del hilo worker
 
   struct workerInfo *wi = (workerInfo *) malloc (sizeof (workerInfo));
   wi->time = time;
@@ -196,58 +225,59 @@ main (int argc, char **argv)
 
   tStatus = pthread_create (&workerPID, NULL, worker, (void *) wi);
 
-  signal (SIGALRM, SIGALRM_control);
+  // Binding de señal SIGARLM con función SIGALRM_control 
+  signal (SIGALRM, SIGALRM_control);  
   alarm (time); // primera llamada al worker
   // Código de hilo principal
   printf ("Comienzo del programa: \n");
   while (true)
     {
       entry  = getchar ();
-      puts("");
       switch (entry)
         {
         case 'p':
-          puts ("pause the program");
+          puts ("En pausa...");
           while (true)
               if (!taken) 
                 {
-                  taken = 1;
+                  taken = 1; // Bloquear variable goDown
                   goDown = 1;
                   taken = 0;
                   break;
                 }
           break;
         case 'c':
-          puts ("continue program");
+          puts ("Continuando...");
           while (true)
             if (!taken)
               {
-                taken = 1;
+                taken = 1; // Bloquear variable goDown
                 goDown = 0;
                 taken = 0;
                 break;
               }
           break;
         case 's':
-          puts ("terminate program");
-          sdown = 1;
-          pthread_join (workerPID, NULL);
-          sleep (2);
+          puts ("Salir...");
+          sdown = 1;  // El thread termina
+          pthread_join (workerPID, NULL); // Esperar a que thread termine
           bye (fd, urlList);
           free (wi);
+          sleep (2);
           exit (EXIT_SUCESS);
         default:
           if (entry != '\n')
-            puts("Instrucción desconocida");
+            printf ("Comando inválido. Lista de comandos disponibles: \n\
+                          p: pausar \n\
+                          c: continuar \n\
+                          s: salir \n");
         }
     }
 
   /***** END threads *****/
 
-
   bye (fd, NULL);
   return 0;
-
 }
 
 
