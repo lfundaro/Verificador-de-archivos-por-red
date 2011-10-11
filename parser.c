@@ -64,6 +64,7 @@ parse(char* pg, struct entry_node** list){
     //A~nadir la nueva entrada
     fileEntry e = parse_entry(pg,(*base_url),(*path),matches);
     *list = add_head(e,*list);
+    printf("%s\n",e.path);//(FLAG)
 
     //regex.h devuelve el ultimo match en el string.
     //Esto 'corta' el string al principio del match
