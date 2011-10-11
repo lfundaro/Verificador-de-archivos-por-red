@@ -3,19 +3,6 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-//Funcion que parsea una pagina
-int
-parse(char* pg, struct entry_node** list){
-  //Build dummy entry
-  fileEntry e; e.name = NULL; e.URL = NULL;
-  e.date = 0; e.dt = NEW;
-
-  //Add new entry to the list
-  *list = add_head(e,*list);
-  
-  return 0; //return success
-}
-
 //Funcion que parsea cada pagina descargada
 entry_node*
 parser(char** pgs, unsigned short npgs){
@@ -29,7 +16,7 @@ parser(char** pgs, unsigned short npgs){
 
     //Parsear pagina
     int retc = parse(pgs[i],&entries);
-    printf("parsed entry %d\n", i);
+    printf("parsed html %d\n", i);
 
     //Salir si hubo un error
     if(retc){
@@ -75,7 +62,7 @@ parse(char* pg, struct entry_node** list){
   while(match_entry(pg,matches_ptr,cpattern_ptr)){
 
     //A~nadir la nueva entrada
-    entry e = parse_entry(pg,(*base_url_ptr),(*path_ptr),matches_ptr);
+    fileEntry e = parse_entry(pg,(*base_url_ptr),(*path_ptr),matches_ptr);
     *list = add_head(e,*list);
 
     //regex.h devuelve el ultimo match en el string.
@@ -120,18 +107,20 @@ match_entry(char* pg,regmatch_t** matches_ptr,regex_t** cpattern_ptr){
   //Ejecutar la expresion regular
   ret = regexec(cpattern,pg,4,matches,0);
   if(ret == REG_NOMATCH){
+    printf("Nothing found!!!\n");//(FLAG)
     return 0;//Retornar fracaso
   }
+  printf("Something found!!!\n");//(FLAG)
   handle_regex_errors(ret);
 
   return 1;//Retornar exito
 }
 
-//Funcion que construye un 'struct entry' a partir de una entrada en el HTML
-entry
+//Funcion que construye un 'struct fileEntry' a partir de una entrada en el HTML
+fileEntry
 parse_entry(char* pg, char* base_url, char* path,
 	    regmatch_t** matches_ptr){
-  entry e;
+  fileEntry e;
   init_entry(&e);
   
   /***Recuperar nombre***/
@@ -184,6 +173,7 @@ parse_url(char* pg, char** path_ptr, char** base_url_ptr){
     temp += 1;
     url_len += 1;
   }
+  url_len += 1;//Un byte extra para EOF
 
   //Copiar el URL a un string aparte
   url = (char*)malloc(sizeof(char)*url_len);
@@ -193,14 +183,14 @@ parse_url(char* pg, char** path_ptr, char** base_url_ptr){
   //Varibles para las expresiones regulares
   regmatch_t* matches = (regmatch_t*)malloc(sizeof(regmatch_t)*3);
   regex_t* cpattern = (regex_t*)malloc(sizeof(regex_t));
-  const char* pattern = "http://\\([\\.a-zA-Z0-9]+\\)\\([/a-zA-Z0-9]+\\)";
+  const char* pattern = "http://\([\.a-zA-Z0-9]+\)\([a-zA-Z0-9/~]+\)";
   
   //Compilar la expresion regular
   ret = regcomp(cpattern,pattern,REG_EXTENDED);
   handle_regex_errors(ret);
 
   //Ejecutar la expresion regular
-  ret = regexec(cpattern,pg,4,matches,0);
+  ret = regexec(cpattern,url,4,matches,0);
   if(ret == REG_NOMATCH){
     fprintf(stdout,"No se encontro URL al principio del HTML\n");
     exit(EXIT_FAILURE);
@@ -218,11 +208,11 @@ parse_url(char* pg, char** path_ptr, char** base_url_ptr){
   end = matches[1].rm_eo;
   size = end - start + 1;
   if((start == -1)||(end == -1)){
-    fprintf(stdout,"error en parser: URL no encontrada\n");
+    fprintf(stdout,"error en parser: dominio no encontrado\n");
     exit(EXIT_FAILURE);
   }
   base_url = (char*)malloc(sizeof(char)*size);
-  strncpy(base_url,(pg+start),size);
+  strncpy(base_url,(url+start),size);
   base_url[size-1] = '\0';
 
   //Guardar path
@@ -234,7 +224,7 @@ parse_url(char* pg, char** path_ptr, char** base_url_ptr){
     exit(EXIT_FAILURE);
   }
   path = (char*)malloc(sizeof(char)*size);
-  strncpy(path,(pg+start),size);
+  strncpy(path,(url+start),size);
   path[size-1] = '\0';
   
   return;

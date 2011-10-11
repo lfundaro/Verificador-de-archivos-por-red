@@ -78,7 +78,7 @@ file_lookup (char *dir, URL *urlList)
 }
 
 void
-init_entry(entry* e){
+init_entry(fileEntry* e){
   e->path = NULL;
   e->URL = NULL;
   e->date = NULL; 

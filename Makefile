@@ -1,8 +1,7 @@
 GCC = gcc
 OPS = -g
 LINK_OPS = -lpthread
-OBJS = main.o fetcher.o entry_list.o parser.o differ.o updater.o printer.o utils.o \
-resolver.o dispatcher.o
+OBJS = main.o fetcher.o entry_list.o parser.o differ.o updater.o printer.o utils.o resolver.o dispatcher.o
 
 all: $(OBJS) data_structures.h Makefile
 	$(GCC) $(OPS) $(LINK_OPS) $(OBJS) -o verific

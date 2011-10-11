@@ -4,22 +4,24 @@
 #include <stdio.h>
 
 //Funcion que descarga las paginas HTTP que se encuentran en el arreglo 'addrs'
-char** fetcher(struct addrinfo* addrs, unsigned short naddrs){
-  int i; //variable de iteracion
+char** fetcher(URL* url_list, int* nurls){
+  //variables de iteracion
+  URL* li = NULL;
+  (*nurls) = 0;
 
   //reservar espacio para apuntadores a las paginas
-  char** pgs = (char**)malloc(sizeof(char*)*naddrs); 
+  char** pgs = (char**)malloc(sizeof(char*)*(*nurls)); 
   
   //iterar por las direcciones
-  for(i = 0; i < naddrs; ++i){
-
+  for(li = url_list; li != NULL; li = li->next){
     //descargar pagina, se guarda en 'pgs'
-    int retc = fetch(addrs[i],&(pgs[i]));
-    printf("fetched entry %d\n",i);
+    int retc = fetch(li,&(pgs[(*nurls)]));
+    printf("fetched webpage %d\n",(*nurls));
 
     if (retc){
       exit(1);//salir si hubo un error
     }
+    ++(*nurls);
   }
 
   return pgs;
@@ -27,9 +29,20 @@ char** fetcher(struct addrinfo* addrs, unsigned short naddrs){
 
 //Funcion que descarga una pagina HTTP
 //en el bufer '*(pg_ptr)' desde la direccion 'pg_addr'
-int fetch(struct addrinfo pg_addr,char** pg_ptr){
+int fetch(URL* url, char** pg_ptr){
   int sock_des = 0;//descriptor de archivo que retorna socket()
   int ret = 0; //para guardar valores de retorno
+
+  //Cabecera que sera a~nadida al tope del HTML descargado
+  //para que el parser sepa el URL de las entradas
+  int url_header_sz = strlen(url->domain)+strlen(url->dir)+1;
+  char* url_header = (char*)malloc(sizeof(char)*(url_header_sz));
+  strcpy(url_header,url->domain);
+  strcat(url_header,url->dir);
+  url_header[url_header_sz-1] = '\0';
+
+  //Direccion de la pagina
+  struct addrinfo pg_addr = *(url->netInfo);
 
   //Crear socket. IPv4/TCP
   sock_des = socket(pg_addr.ai_family,
@@ -39,7 +52,6 @@ int fetch(struct addrinfo pg_addr,char** pg_ptr){
     printf("Error creando el socket");
     exit(1);
   }
-
 
   //Conectar a la pagina usando el socket
   ret = connect(sock_des,
@@ -65,7 +77,7 @@ int fetch(struct addrinfo pg_addr,char** pg_ptr){
     exit(1);
   }
 
-  download_page(pg_ptr,sock_des);
+  download_page(pg_ptr,sock_des,url_header,url_header_sz);
 
   //(FLAG) Imprimir pagina descargada
   printf("%s\n",*(pg_ptr));
@@ -76,7 +88,8 @@ int fetch(struct addrinfo pg_addr,char** pg_ptr){
 
 //Descarga una pagina HTTP en '*(pg_ptr)' usando el socket
 //apuntado por 'sock_des'
-char* download_page(char** pg_ptr, int sock_des){
+char* download_page(char** pg_ptr, int sock_des,
+		    char* url_header, int url_header_sz){
   /**Lee pagina HTTP en bloques de tama~no 'blck_sz'**/
 
   //Tama~no de bloque
@@ -92,13 +105,19 @@ char* download_page(char** pg_ptr, int sock_des){
   int total_buff_sz = 0;
 
   //Reserva inicial de espacio para la pagina
-  *(pg_ptr) = (char*)malloc(sizeof(char)*(blck_sz + 1));//'+ 1' por el byte nulo
+  *(pg_ptr) = (char*)malloc(sizeof(char)*(url_header_sz + blck_sz + 1));//'+ 1' por el byte nulo
 
   //Apuntador donde escribira read()
   char* write_ptr = *(pg_ptr);
   
   //bytes leidos en una llamada a read()
   ssize_t read_bytes = 0;
+
+  //A~nadir la cabecera para que el
+  //parser sepa el URL de las entradas
+  strcpy((*pg_ptr),url_header);
+  (*pg_ptr)[url_header_sz-1] = '\n';
+  write_ptr += url_header_sz;
 
   //Mientras read() lea algo
   while((read_bytes = read(sock_des,write_ptr,pending_sz)) > 0){

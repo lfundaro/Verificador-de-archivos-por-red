@@ -3,15 +3,17 @@
 #include <stdlib.h>
 #include <netdb.h>
 
+#include "data_structures.h"
 #include "fetcher.h"
 #include "parser.h"
+#include "printer.h"
 
 int
 main(){
   int ret = 0; //to hold return values
   int i = 0; //iteration variable
 
-  unsigned short naddrs = 1;
+  int naddrs = 1;
   struct addrinfo* addrs = (struct addrinfo*)malloc(sizeof(struct addrinfo)*naddrs);
   for(i = 0; i < naddrs; ++i){
     memset(&(addrs[i]),0,sizeof(struct addrinfo));
@@ -34,11 +36,20 @@ main(){
     exit(1);
   }
 
-  char** pgs = fetcher(addrs,naddrs);
+  URL* url_list = (URL*)malloc(sizeof(URL));
+  url_list->domain = "http://localhost";
+  url_list->dir = "/~jorge/";
+  url_list->netInfo = &(addrs[0]);
+  url_list->next = NULL;
+
+  char** pgs = fetcher(url_list,&naddrs);
   printf("FETCHER DONE\n");
 
   entry_node* entries = parser(pgs,naddrs);
   printf("PARSER DONE\n");
+
+  printer(entries);
+  printf("PRINTER DONE\n");
 
   return 0;
 }
