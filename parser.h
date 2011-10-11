@@ -23,7 +23,7 @@ int match_entry(char* pg,
 void parse_url(char* pg, char** path, char** base_url);
 
 //Funcion que construye un 'struct entry' a partir de una entrada en el HTML
-entry parse_entry(char* pg, char* base_url, char* path,
+fileEntry parse_entry(char* pg, char* base_url, char* path,
 		  regmatch_t** matches_ptr);
 
 //Funcion que recupera un subcampo de un match de la expresion regular

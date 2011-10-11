@@ -1,11 +1,17 @@
 GCC = gcc
 OPS = -g
 LINK_OPS = -lpthread
-OBJS = main.o fetcher.o entry_list.o parser.o differ.o updater.o printer.o utils.o \
-resolver.o dispatcher.o
+OBJS = main.o fetcher.o entry_list.o parser.o differ.o updater.o printer.o utils.o resolver.o dispatcher.o
+TEST_OBJS = test.o fetcher.o entry_list.o parser.o printer.o utils.o dispatcher.o differ.o updater.o
 
 all: $(OBJS) data_structures.h Makefile
 	$(GCC) $(OPS) $(LINK_OPS) $(OBJS) -o verific
+
+test: $(TEST_OBJS) data_structures.h Makefile
+	$(GCC) $(OPS) $(TEST_OBJS) -o test
+
+test.o : test.c
+	$(GCC) $(OPS) -c test.c
 
 main.o : main.c
 	$(GCC) $(OPS) -c main.c
@@ -41,4 +47,4 @@ check-syntax:
 	$(GCC) $(OPS) $(LINK_OPS) -o nul -S ${CHK_SOURCES}
 
 clean:
-	rm -rf givnaarial .\#* \#* *.o .*~ *~ *.gch
+	rm -rf verific .\#* \#* *.o .*~ *~ *.gch

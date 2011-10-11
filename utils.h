@@ -17,5 +17,5 @@ int
 file_lookup (char *, URL *);
 
 void
-init_entry(entry* e);
+init_entry(fileEntry* e);
 #endif

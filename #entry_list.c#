@@ -60,7 +60,7 @@ void free_list(struct entry_node* en){
     free(kill);
 
     kill = next;
-    next = kill->next;
+-    next = kill->next;
   }
 
   return;
