@@ -1,5 +1,6 @@
 #ifndef DATA_STRUCTURES_H
 #define DATA_STRUCTURES_H
+#include <search.h>
 
 enum diff_type{NEW , CHANGE , NODIFF};
 
@@ -49,6 +50,7 @@ struct workerInfo
 {
   unsigned int time;
   struct URL* urlList;
+  ENTRY **eControl;
 };
 
 #endif
