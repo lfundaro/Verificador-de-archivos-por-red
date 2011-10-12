@@ -18,13 +18,6 @@
 #include "utils.h"
 #include "dispatcher.h"
 
-#define DEFAULT_TIME 30
-#define EXIT_FAILURE 1
-#define EXIT_SUCESS 0
-#define MAX_ENTRIES 200
-#define false 0
-#define true 1
-
 // Variables de control para threads
 int goDown = 0;
 int goWork = 0;
