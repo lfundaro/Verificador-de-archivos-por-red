@@ -268,15 +268,13 @@ main (int argc, char **argv)
         default:
           if (entry != '\n')
             printf ("Comando inválido. Lista de comandos disponibles: \n\
-                          p: pausar \n\
-                          c: continuar \n\
-                          s: salir \n");
+    p: pausar \n\
+    c: continuar \n\
+    s: salir \n");
         }
     }
 
   /***** END threads *****/
-
-  bye (fd, NULL);
   return 0;
 }
 
