@@ -11,7 +11,8 @@
 // estos mismos despues de transcurrir un lapso 
 // de tiempo t.
 enum diff_type
-diff(fileEntry e) {
+diff(fileEntry e) 
+{
   ENTRY *found = NULL;
   int gle;
   // Construcción de estructura (key,data) que se inserta 
