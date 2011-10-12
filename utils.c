@@ -1,6 +1,8 @@
 #include "utils.h"
 #define URL_MAX_SIZE 2048
 
+// Extrae las líneas especificadas en el archivo 
+// y almacena la información en la estructura URL. 
 URL *
 parseFile (FILE* fd) 
 {
@@ -12,8 +14,10 @@ parseFile (FILE* fd)
   URL *head = NULL;
   int i;
   
+  // Leer línea por línea de archivo
   while ((chars_read = getline (&input_line, &char_size, fd)) != -1)
     {
+      // Pedir e inicializar memoria para estructuras
       curr = (URL *) malloc (sizeof (URL));
       memset ((void *) curr, '\0', sizeof (URL));
       curr->dir = (char *) malloc (sizeof (char)*2048);
@@ -22,6 +26,7 @@ parseFile (FILE* fd)
       memset ((void *) curr->domain, '\0', sizeof (char) * 1024);      
       // eliminar caracter \n 
       input_line[chars_read - 1] = '\0';
+      // Copiar string de directorio a estructura URL
       strcpy (curr->dir, input_line);
       // extraer dominio del URL 
       // empezando desde el 7mo caracter http:// <-
@@ -41,10 +46,13 @@ parseFile (FILE* fd)
       puts ("Archivo vacío");
       exit (EXIT_FAILURE);
     }
+
   free (input_line);
   return head;
 }
 
+
+// Libera recursos para estructura urlList
 void 
 free_URL (URL *url_list) 
 {
@@ -62,11 +70,15 @@ free_URL (URL *url_list)
   return;
 }
 
+// Verifica si el directorio especificado por el usuario 
+// con la opción -d existe dentro del archivo especificado 
+// por la opción -a
 int 
 file_lookup (char *dir, URL *urlList) 
 {
   URL *tmp = urlList;
   int cmp = -1;
+  // Recorrer lista de directorios
   while (tmp->next != NULL)
     {
       cmp = strcmp (dir, tmp->dir);
@@ -77,6 +89,7 @@ file_lookup (char *dir, URL *urlList)
   return cmp;
 }
 
+// Inicializa estructura de tipo fileEntry.
 void
 init_entry(fileEntry* e){
   e->path = NULL;

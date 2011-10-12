@@ -18,12 +18,6 @@
 #include "utils.h"
 #include "dispatcher.h"
 
-#define DEFAULT_TIME 30
-#define EXIT_FAILURE 1
-#define EXIT_SUCESS 0
-#define false 0
-#define true 1
-
 // Variables de control para threads
 int goDown = 0;
 int goWork = 0;
@@ -114,8 +108,8 @@ main (int argc, char **argv)
   char entry;
   FILE *fd = NULL;
   URL *urlList;
-  hcreate (200);
-    
+  // Crear hash table
+  hcreate (MAX_ENTRIES);
   
   opterr = 0;
 
@@ -263,20 +257,19 @@ main (int argc, char **argv)
           pthread_join (workerPID, NULL); // Esperar a que thread termine
           bye (fd, urlList);
           free (wi);
+          hdestroy ();
           sleep (2);
           exit (EXIT_SUCESS);
         default:
           if (entry != '\n')
             printf ("Comando inválido. Lista de comandos disponibles: \n\
-                          p: pausar \n\
-                          c: continuar \n\
-                          s: salir \n");
+    p: pausar \n\
+    c: continuar \n\
+    s: salir \n");
         }
     }
 
   /***** END threads *****/
-
-  bye (fd, NULL);
   return 0;
 }
 

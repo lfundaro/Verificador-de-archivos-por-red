@@ -2,13 +2,14 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-void print(struct fileEntry e)
+
+// Imprime por consola si existe un nuevo archivo o 
+// si se modificó un archivo.
+void 
+print (struct fileEntry e)
 {
   if (e.dt == NODIFF)
-    {
-      //      printf("Nueva entrada: %s%s ~ %s ~ %s\n",e.URL,e.path,e.date,e.size);//(FLAG)
       return;
-    }
   else
     {
       if (e.dt == NEW)
@@ -19,7 +20,10 @@ void print(struct fileEntry e)
   return;
 }
 
-void printer(entry_node* diffs){
+// Lanzador de acciones print
+void 
+printer(entry_node* diffs)
+{
   entry_node* curr = diffs;//Variable de iteracion
 
   //Iterar sobre las diferencias
