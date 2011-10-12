@@ -28,7 +28,7 @@ fetcher(URL* url_list, int* nurls){
     //    printf("fetched webpage %d\n",i); // (FLAG)
 
     if (retc){
-      exit(1);//salir si hubo un error
+      exit(EXIT_FAILURE);//salir si hubo un error
     }
     ++i;
   }
@@ -58,8 +58,8 @@ fetch(URL* url, char** pg_ptr){
 		    pg_addr.ai_socktype,
 		    pg_addr.ai_protocol);
   if (sock_des == -1){
-    printf("Error creando el socket\n");
-    exit(1);
+    perror("Error creando el socket: ");
+    exit(EXIT_FAILURE);
   }
 
   //Conectar a la pagina usando el socket
@@ -67,8 +67,8 @@ fetch(URL* url, char** pg_ptr){
 		pg_addr.ai_addr, 
 		pg_addr.ai_addrlen);
   if(ret){
-    printf("Error conectandose\n");
-    exit(1);
+    perror("Error conectandose: ");
+    exit(EXIT_FAILURE);
   }
 
   //Construir instruccion HTTP.
@@ -88,12 +88,12 @@ fetch(URL* url, char** pg_ptr){
   //Enviar paquete HTTP
   ret = write(sock_des, (void*)http_get, get_len);
   if(ret < 0){
-    printf("Error escribiendo en el socket\n");
-    exit(1);
+    perror("Error escribiendo en el socket: ");
+    exit(EXIT_FAILURE);
   }
   if(ret < get_len){
-    printf("Error, transmision incompleta/fallida\n");
-    exit(1);
+    perror("Error, transmision incompleta/fallida: ");
+    exit(EXIT_FAILURE);
   }
 
   //Descargar pagina
@@ -175,8 +175,8 @@ char* download_page(char** pg_ptr, int sock_des,
   }
 
   if(read_bytes < 0){
-    printf("Error leyendo del socket");
-    exit(1);
+    perror("Error leyendo del socket: ");
+    exit(EXIT_FAILURE);
   }
 
   *(write_ptr) = '\0';//Byte nulo de terminacion

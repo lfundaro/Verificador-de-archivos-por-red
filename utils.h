@@ -22,6 +22,8 @@ init_entry(fileEntry* e);
 //Manejar errores de la libreria 'regex.h'
 void handle_regex_errors(int errcode);
 
+void* smalloc(int size);
+
 int asciinum_to_int(char c);
 
 //Manejar los codigo de error de HTTP

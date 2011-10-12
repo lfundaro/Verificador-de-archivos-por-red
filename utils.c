@@ -148,6 +148,19 @@ handle_regex_errors(int errcode){
   return; 
 }
 
+void*
+smalloc(int size){
+  void* ptr = malloc(size);
+
+  if((size != 0)&&(ptr == NULL)){
+    fprintf(stdout,"Error reservando memoria: ");
+    perror("");
+    exit(EXIT_FAILURE);
+  }
+
+  return ptr;
+}
+
 int
 asciinum_to_int(char c){
   switch(c){
