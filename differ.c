@@ -35,6 +35,7 @@ enum diff_type diff(fileEntry e)
     }
   else  // Archivo no existe
       result = NEW;
+
   free (key_str);
   free (qry->key);
   free (qry->data);
@@ -54,11 +55,9 @@ entry_node* differ(entry_node* entries){
     
     //Calcular tipo de diferencia
     enum diff_type dt = diff(curr->e);
-    //    printf("Calculated diff: %d\n",dt); (FLAG)
 
     //Si existe una diferencia, agregar la entrada
     if(dt != NODIFF){
-      //      printf("changed detected: %d\n",dt); (FLAG)
       fileEntry e = curr->e; e.dt = dt;
       diffs = add_head(e,diffs);
     }

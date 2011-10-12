@@ -11,7 +11,8 @@
 // printer se encarga de notificar por cónsola los cambios de archivos
 // o si existe un nuevo archivo.
 void
-dispatcher(URL* url_list){
+dispatcher(URL* url_list)
+{
   int nurls = 0;
 
   //  printf("FETCHER START\n"); //(FLAG)
@@ -36,5 +37,7 @@ dispatcher(URL* url_list){
   printer(diffs);
 
   free_list(diffs);
+  puts ("");
+  puts ("");
   return;
 }

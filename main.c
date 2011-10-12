@@ -21,6 +21,7 @@
 #define DEFAULT_TIME 30
 #define EXIT_FAILURE 1
 #define EXIT_SUCESS 0
+#define MAX_ENTRIES 200
 #define false 0
 #define true 1
 
@@ -114,8 +115,8 @@ main (int argc, char **argv)
   char entry;
   FILE *fd = NULL;
   URL *urlList;
-  hcreate (200);
-    
+  // Crear hash table
+  hcreate (MAX_ENTRIES);
   
   opterr = 0;
 
@@ -263,6 +264,7 @@ main (int argc, char **argv)
           pthread_join (workerPID, NULL); // Esperar a que thread termine
           bye (fd, urlList);
           free (wi);
+          hdestroy ();
           sleep (2);
           exit (EXIT_SUCESS);
         default:

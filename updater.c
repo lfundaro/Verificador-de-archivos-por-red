@@ -20,16 +20,16 @@ void update(struct fileEntry e){
       p->key = strdup (key_str);
       p->data = strdup (e.date);
       if (e.dt == NEW)  // NUEVA ENTRADA
-        hsearch (*p, ENTER);
+          hsearch (*p, ENTER);
       else // MODIFICAR ENTRADA
         {
           ENTRY *pmodif = hsearch (*p, FIND);
           strcpy (pmodif->data, e.date);
         }
       // Liberar recursos
-      free (p->data);
-      free (p->key);
-      free (p);
+      /* free (p->data); */
+      /* free (p->key); */
+      /* /\* free (p); *\/ */
       free (key_str);
     }
   return;
