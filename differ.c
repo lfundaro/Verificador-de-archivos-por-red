@@ -34,12 +34,15 @@ enum diff_type diff(fileEntry e)
   return result;
 }
 
-entry_node* differ(entry_node* entries){
+entry_node*
+differ(entry_node* entries){
   entry_node* curr = entries;//Variable de iteracion
+  entry_node* kill = NULL;
+
 
   //Lista de diferencias
   entry_node* diffs = NULL;
-  for(curr; curr != NULL; curr = curr->next){
+  while(curr != NULL){
     
     //Calcular tipo de diferencia
     enum diff_type dt = diff(curr->e);
@@ -47,9 +50,20 @@ entry_node* differ(entry_node* entries){
 
     //Si existe una diferencia, agregar la entrada
     if(dt != NODIFF){
-      //      printf("changed detected: %d\n",dt); (FLAG)
       fileEntry e = curr->e; e.dt = dt;
       diffs = add_head(e,diffs);
+
+      //Actualizar curr y liberar el nodo actual
+      kill = curr;
+      curr = curr->next;
+      free(kill);
+    }
+    else{
+      //Actualizar curr y liberar el nodo actual
+      kill = curr;
+      curr = curr->next;
+      free_node(kill);      
+      free(kill);
     }
   }
 

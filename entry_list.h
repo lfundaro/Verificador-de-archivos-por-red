@@ -17,4 +17,5 @@ entry_node* del_head(struct entry_node*);
 
 void free_list(struct entry_node*);
 
+void free_node(struct entry_node*);
 #endif

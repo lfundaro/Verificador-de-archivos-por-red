@@ -39,28 +39,36 @@ entry_node* del_head(struct entry_node* en){
   return n;
 }
 
-void free_list(struct entry_node* en){
+void
+free_list(struct entry_node* en){
   entry_node *kill = en;
   entry_node *next = NULL;
   
   while(kill != NULL){
 
-    if(kill->e.path != NULL)
-      free(kill->e.path);
-
-    if(kill->e.URL != NULL)
-      free(kill->e.URL);
-
-    if(kill->e.date != NULL)
-      free(kill->e.date);
-
-    if(kill->e.size != NULL)
-      free(kill->e.size);
+    free_node(kill);
 
     next = kill->next;
     free(kill);
     kill = next;
   }
+
+  return;
+}
+
+void
+free_node(struct entry_node* en){
+  if(en->e.path != NULL)
+    free(en->e.path);
+
+  if(en->e.URL != NULL)
+    free(en->e.URL);
+
+  if(en->e.date != NULL)
+    free(en->e.date);
+
+  if(en->e.size != NULL)
+    free(en->e.size);
 
   return;
 }
