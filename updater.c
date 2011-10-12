@@ -6,7 +6,9 @@
 
 // Actualiza tabla de hash en caso de encontrar un archivo nuevo
 // o una modificación.
-void update(struct fileEntry e){
+void 
+update(struct fileEntry e, ENTRY **eControl)
+{
   if (e.dt == NODIFF)
     return;
   else 
@@ -20,7 +22,10 @@ void update(struct fileEntry e){
       p->key = strdup (key_str);
       p->data = strdup (e.date);
       if (e.dt == NEW)  // NUEVA ENTRADA
+        {
+          add_eControl (p, eControl);
           hsearch (*p, ENTER);
+        }
       else // MODIFICAR ENTRADA
         {
           ENTRY *pmodif = hsearch (*p, FIND);
@@ -36,12 +41,12 @@ void update(struct fileEntry e){
 }
 
 // Llama a función update
-void updater(entry_node* diffs){
+void updater(entry_node* diffs, ENTRY **eControl){
   entry_node* curr = diffs;//Variable de iteracion
 
   //Iterar sobre las diferencias
   for(curr; curr != NULL; curr = curr->next){    
-    update(curr->e);
+    update(curr->e, eControl);
   }
   return;
 }

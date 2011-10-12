@@ -28,4 +28,11 @@ int asciinum_to_int(char c);
 
 //Manejar los codigo de error de HTTP
 void http_error_handler(char* http_code, char* url);
+
+// Agrega apuntador ENTRY a la lista de control 
+void 
+add_eControl (ENTRY *p, ENTRY * *eControl);
+
+void 
+free_ENTRY (ENTRY **eControl);
 #endif

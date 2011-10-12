@@ -1,4 +1,5 @@
 #include "utils.h"
+#include "globals.h"
 #define URL_MAX_SIZE 2048
 
 // Extrae las lÃ­neas especificadas en el archivo 
@@ -159,6 +160,34 @@ handle_regex_errors(int errcode){
   exit(EXIT_FAILURE);
 
   return; 
+}
+
+// Hace una copia del apuntador de la estructura ENTRY 
+// que se almacena en la tabla de hash para después 
+// liberar dicho apuntador con todas sus subestructuras 
+void 
+add_eControl (ENTRY *p, ENTRY **eControl)
+{
+  int i;
+  for (i = 0; eControl[i] != NULL; i++);
+  if (i <= MAX_ENTRIES)
+    eControl[i] = p;
+  return;
+}
+
+// Función que libera los datos guardados dentro de la 
+// tabla de hash.
+void
+free_ENTRY (ENTRY **eControl)
+{
+  int i;
+  for (i = 0; i <= MAX_ENTRIES && eControl[i] != NULL; i++)
+    {
+      free (eControl[i]->key);
+      free (eControl[i]->data);
+      free (eControl[i]);
+    }
+  return;
 }
 
 void*
