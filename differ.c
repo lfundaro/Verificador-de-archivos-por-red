@@ -5,10 +5,17 @@
 #include <search.h>
 #include <string.h>
 
+
+// Determina diferencias de fecha, hora y tamaño 
+// de los archivos del servidor con respecto a 
+// estos mismos despues de transcurrir un lapso 
+// de tiempo t.
 enum diff_type diff(fileEntry e)
 {
   ENTRY *found = NULL;
   int gle;
+  // Construcción de estructura (key,data) que se inserta 
+  // en tabla de hash.
   ENTRY *qry = (ENTRY *) malloc (sizeof(ENTRY));
   int keylength = strlen (e.URL) + strlen (e.path) + 1;
   char *key_str = (char *) malloc (sizeof (char) * keylength);
@@ -21,7 +28,6 @@ enum diff_type diff(fileEntry e)
   // Chequear si es un nuevo archivo 
   if ((found = hsearch (*qry, FIND)) != NULL) // Archivo existe
     {
-      free (qry->key);
       if ((gle = strcmp (found->data, e.date)) == 0)
         result = NODIFF;
       else 
@@ -30,10 +36,15 @@ enum diff_type diff(fileEntry e)
   else  // Archivo no existe
       result = NEW;
   free (key_str);
+  free (qry->key);
+  free (qry->data);
   free (qry);
   return result;
 }
 
+
+// Función que construye lista de archivos que presentan 
+// diferencias.
 entry_node* differ(entry_node* entries){
   entry_node* curr = entries;//Variable de iteracion
 
@@ -52,6 +63,5 @@ entry_node* differ(entry_node* entries){
       diffs = add_head(e,diffs);
     }
   }
-
   return diffs;
 }
