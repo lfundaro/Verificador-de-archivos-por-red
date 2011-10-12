@@ -28,8 +28,4 @@ fileEntry parse_entry(char* pg, char* base_url, char* path,
 
 //Funcion que recupera un subcampo de un match de la expresion regular
 char* get_data(int data_pos,char* pg,regmatch_t** matches_ptr);
-
-//Manejar errores de la libreria 'regex.h'
-void handle_regex_errors(int errcode);
-
 #endif

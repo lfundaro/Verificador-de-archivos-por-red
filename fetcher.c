@@ -4,7 +4,8 @@
 #include <stdio.h>
 
 //Funcion que descarga las paginas HTTP que se encuentran en el arreglo 'addrs'
-char** fetcher(URL* url_list, int* nurls){
+char**
+fetcher(URL* url_list, int* nurls){
   //variables de iteracion
   URL* li = NULL;
   int i = 0;
@@ -37,7 +38,8 @@ char** fetcher(URL* url_list, int* nurls){
 
 //Funcion que descarga una pagina HTTP
 //en el bufer '*(pg_ptr)' desde la direccion 'pg_addr'
-int fetch(URL* url, char** pg_ptr){
+int
+fetch(URL* url, char** pg_ptr){
   int sock_des = 0;//descriptor de archivo que retorna socket()
   int ret = 0; //para guardar valores de retorno
 
@@ -94,7 +96,15 @@ int fetch(URL* url, char** pg_ptr){
     exit(1);
   }
 
+  //Descargar pagina
   download_page(pg_ptr,sock_des,url_header,url_header_sz);
+
+  //Recuperar codigo HTTP y manejarlo
+  char http_code[3];
+  http_code[0] = (*pg_ptr)[url_header_sz+1 + 8];
+  http_code[1] = (*pg_ptr)[url_header_sz+2 + 8];
+  http_code[2] = (*pg_ptr)[url_header_sz+3 + 8];
+  http_error_handler(http_code, url_header);
 
   //(FLAG) Imprimir pagina descargada
   //  printf("%s\n",*(pg_ptr));
