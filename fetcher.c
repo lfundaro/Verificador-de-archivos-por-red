@@ -19,7 +19,7 @@ fetcher(URL* url_list, int* nurls){
   }
 
   //reservar espacio para apuntadores a las paginas
-  char** pgs = (char**)malloc(sizeof(char*)*(*nurls)); 
+  char** pgs = (char**)smalloc(sizeof(char*)*(*nurls)); 
   
   //iterar por las direcciones
   for(li = url_list; li != NULL; li = li->next){
@@ -46,7 +46,7 @@ fetch(URL* url, char** pg_ptr){
   //Cabecera que sera a~nadida al tope del HTML descargado
   //para que el parser sepa el URL de las entradas
   int url_header_sz = strlen(url->dir) + 1;
-  char* url_header = (char*)malloc(sizeof(char)*(url_header_sz));
+  char* url_header = (char*)smalloc(sizeof(char)*(url_header_sz));
   strcpy(url_header,url->dir);
   url_header[url_header_sz-1] = '\0';
 
@@ -77,7 +77,7 @@ fetch(URL* url, char** pg_ptr){
   int url_len =  strlen(url->dir);
   int aux_get_len = strlen(aux_get_first) + strlen(aux_get_second);
 
-  char* http_get = (char*)malloc(sizeof(char)*(url_len + aux_get_len +1));
+  char* http_get = (char*)smalloc(sizeof(char)*(url_len + aux_get_len +1));
   strcpy(http_get,aux_get_first);
   strcat(http_get,url->dir);
   strcat(http_get,aux_get_second);
@@ -135,7 +135,7 @@ char* download_page(char** pg_ptr, int sock_des,
   int total_buff_sz = 0;
 
   //Reserva inicial de espacio para la pagina
-  *(pg_ptr) = (char*)malloc(sizeof(char)*(url_header_sz + blck_sz + 1));//'+ 1' por el byte nulo
+  *(pg_ptr) = (char*)smalloc(sizeof(char)*(url_header_sz + blck_sz + 1));//'+ 1' por el byte nulo
 
   //Apuntador donde escribira read()
   char* write_ptr = *(pg_ptr);
@@ -160,7 +160,7 @@ char* download_page(char** pg_ptr, int sock_des,
     if(total_buff_sz == max_buff_sz){
 
       //Crear un nuevo bufer ('+ 1' por el byte nulo)
-      char* t = (char*)malloc(sizeof(char)*(total_buff_sz + blck_sz + 1));
+      char* t = (char*)smalloc(sizeof(char)*(total_buff_sz + blck_sz + 1));
       memcpy(t,*(pg_ptr),total_buff_sz);
 
       //Actualizar apuntadores

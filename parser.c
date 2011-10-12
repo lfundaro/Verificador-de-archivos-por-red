@@ -44,8 +44,8 @@ parser(char** pgs, unsigned short npgs){
 //Funcion que parsea una pagina
 int
 parse(char* pg, struct entry_node** list){
-  char** base_url = (char**)malloc(sizeof(char*));
-  char** path = (char**)malloc(sizeof(char*));
+  char** base_url = (char**)smalloc(sizeof(char*));
+  char** path = (char**)smalloc(sizeof(char*));
   char* pg_ptr = pg;
   (*base_url) = NULL;
   (*path) = NULL;
@@ -53,10 +53,10 @@ parse(char* pg, struct entry_node** list){
 
   //Arreglo con desplazamientos de los matches
   //con respecto al comienzo del HTTP
-  regmatch_t** matches = (regmatch_t**)malloc(sizeof(regmatch_t*));
+  regmatch_t** matches = (regmatch_t**)smalloc(sizeof(regmatch_t*));
   (*matches) = NULL;
 
-  regex_t** cpattern = (regex_t**)malloc(sizeof(regex_t*));
+  regex_t** cpattern = (regex_t**)smalloc(sizeof(regex_t*));
   (*cpattern) = NULL;
 
   //Mientras halla entradas
@@ -104,10 +104,10 @@ match_entry(char* pg_ptr,regmatch_t** matches,regex_t** cpattern){
 
   //Alocar los apuntadores que sean nulos
   if((*matches) == NULL){
-    (*matches) = (regmatch_t*)malloc(sizeof(regmatch_t)*(1+REG_NMATCHES));
+    (*matches) = (regmatch_t*)smalloc(sizeof(regmatch_t)*(1+REG_NMATCHES));
   }
   if((*cpattern) == NULL){
-    (*cpattern) = (regex_t*)malloc(sizeof(regex_t));
+    (*cpattern) = (regex_t*)smalloc(sizeof(regex_t));
     //Compilar la expresion regular
     ret = regcomp((*cpattern),pattern,REG_EXTENDED);
     handle_regex_errors(ret);
@@ -140,7 +140,7 @@ parse_entry(char* pg_ptr, char* base_url, char* path,
   }  
 
   int entry_path_sz = strlen(path) + strlen(name) + 1;
-  char* entry_path = (char*)malloc(sizeof(char)*(entry_path_sz));
+  char* entry_path = (char*)smalloc(sizeof(char)*(entry_path_sz));
   strcpy(entry_path,path);
   strcat(entry_path,name);
   entry_path[entry_path_sz - 1] = '\0';
@@ -166,7 +166,7 @@ parse_entry(char* pg_ptr, char* base_url, char* path,
   e.size = entry_size;
 
   /***Agregar URL***/
-  e.URL = (char*)malloc(sizeof(char)*(strlen(base_url)+1));//+1 por el byte de terminacion
+  e.URL = (char*)smalloc(sizeof(char)*(strlen(base_url)+1));//+1 por el byte de terminacion
   strcpy(e.URL,base_url);
 
   return e;
@@ -188,13 +188,13 @@ parse_url(char* pg_ptr, char** path, char** base_url){
   url_len += 1;//Un byte extra para EOF
 
   //Copiar el URL a un string aparte
-  url = (char*)malloc(sizeof(char)*url_len);
+  url = (char*)smalloc(sizeof(char)*url_len);
   strncpy(url,pg_ptr,url_len);
   url[url_len-1] = '\0';
 
   //Varibles para las expresiones regulares
-  regmatch_t* matches = (regmatch_t*)malloc(sizeof(regmatch_t)*3);
-  regex_t* cpattern = (regex_t*)malloc(sizeof(regex_t));
+  regmatch_t* matches = (regmatch_t*)smalloc(sizeof(regmatch_t)*3);
+  regex_t* cpattern = (regex_t*)smalloc(sizeof(regex_t));
   const char* pattern = "\(http://[\.a-zA-Z0-9]+\)\([a-zA-Z0-9/~]+\)";
   
   //Compilar la expresion regular
@@ -221,7 +221,7 @@ parse_url(char* pg_ptr, char** path, char** base_url){
     fprintf(stdout,"error en parser: dominio no encontrado\n");
     exit(EXIT_FAILURE);
   }
-  (*base_url) = (char*)malloc(sizeof(char)*size);
+  (*base_url) = (char*)smalloc(sizeof(char)*size);
   strncpy((*base_url),(url+start),size);
   (*base_url)[size-1] = '\0';
 
@@ -233,7 +233,7 @@ parse_url(char* pg_ptr, char** path, char** base_url){
     fprintf(stdout,"error en parser: PATH no encontrado\n");
     exit(EXIT_FAILURE);
   }
-  (*path) = (char*)malloc(sizeof(char)*size);
+  (*path) = (char*)smalloc(sizeof(char)*size);
   strncpy((*path),(url+start),size);
   (*path)[size-1] = '\0';
 
@@ -259,7 +259,7 @@ get_data(int data_pos,char* pg_ptr,regmatch_t** matches){
     return (char*)-1;
   }
 
-  data = (char*)malloc(sizeof(char)*data_sz);
+  data = (char*)smalloc(sizeof(char)*data_sz);
   strncpy(data,(pg_ptr+start),data_sz);
   data[data_sz-1] = '\0';
 

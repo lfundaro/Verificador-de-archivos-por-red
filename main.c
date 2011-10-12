@@ -174,11 +174,11 @@ main (int argc, char **argv)
     urlList  = parseFile(fd);
   else // poner información de directorio en urlList 
     {
-      urlList = (URL *) malloc (sizeof (URL));
+      urlList = (URL *) smalloc (sizeof (URL));
       memset ((void *) urlList, '\0', sizeof (URL));
-      urlList->dir = (char *) malloc (sizeof (char)*2048);
+      urlList->dir = (char *) smalloc (sizeof (char)*2048);
       memset ((void *) urlList->dir, '\0', sizeof (char) * 2048);
-      urlList->domain = (char *) malloc (sizeof (char)*1024);
+      urlList->domain = (char *) smalloc (sizeof (char)*1024);
       memset ((void *) urlList->domain, '\0', sizeof (char) * 1024);      
       strcpy (urlList->dir, dir);
       // extracción de dominio en URL
@@ -213,7 +213,7 @@ main (int argc, char **argv)
   
   // Preparar argumento para la función del hilo worker
 
-  struct workerInfo *wi = (workerInfo *) malloc (sizeof (workerInfo));
+  struct workerInfo *wi = (workerInfo *) smalloc (sizeof (workerInfo));
   wi->time = time;
   wi->urlList = urlList;
 

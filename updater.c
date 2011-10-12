@@ -12,9 +12,9 @@ void update(struct fileEntry e){
   else 
     {
       // Preparar estructura ENTRY para tabla de hash.
-      ENTRY *p = (ENTRY *) malloc (sizeof(ENTRY));
+      ENTRY *p = (ENTRY *) smalloc (sizeof(ENTRY));
       int keylength = strlen (e.URL) + strlen (e.path) + 1;
-      char *key_str = (char *) malloc (sizeof (char) * keylength);
+      char *key_str = (char *) smalloc (sizeof (char) * keylength);
       strcpy (key_str, e.URL);
       strcat (key_str, e.path);
       p->key = strdup (key_str);

@@ -12,7 +12,7 @@ char *regexp (char *string, char *patrn, int *begin, int *end) {
                 *begin = (int)match.rm_so;
                 *end = (int)match.rm_eo;
                 len = *end-*begin;
-                word=malloc(len+1);
+                word=smalloc(len+1);
                 for (i=*begin; i<*end; i++) {
                         word[w] = string[i];
                         w++; }

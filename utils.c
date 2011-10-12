@@ -8,7 +8,7 @@ parseFile (FILE* fd)
 {
   int chars_read = 0;
   int char_size = URL_MAX_SIZE;
-  char *input_line = (char *) malloc (char_size + 1);
+  char *input_line = (char *) smalloc (char_size + 1);
   int clines = 0;
   URL *curr;
   URL *head = NULL;
@@ -18,11 +18,11 @@ parseFile (FILE* fd)
   while ((chars_read = getline (&input_line, &char_size, fd)) != -1)
     {
       // Pedir e inicializar memoria para estructuras
-      curr = (URL *) malloc (sizeof (URL));
+      curr = (URL *) smalloc (sizeof (URL));
       memset ((void *) curr, '\0', sizeof (URL));
-      curr->dir = (char *) malloc (sizeof (char)*2048);
+      curr->dir = (char *) smalloc (sizeof (char)*2048);
       memset ((void *) curr->dir, '\0', sizeof (char) * 2048);
-      curr->domain = (char *) malloc (sizeof (char)*1024);
+      curr->domain = (char *) smalloc (sizeof (char)*1024);
       memset ((void *) curr->domain, '\0', sizeof (char) * 1024);      
       // eliminar caracter \n 
       input_line[chars_read - 1] = '\0';
@@ -166,8 +166,7 @@ smalloc(int size){
   void* ptr = malloc(size);
 
   if((size != 0)&&(ptr == NULL)){
-    fprintf(stdout,"Error reservando memoria: ");
-    perror("");
+    perror("Error reservando memoria: ");
     exit(EXIT_FAILURE);
   }
 
