@@ -24,8 +24,10 @@ void handle_regex_errors(int errcode);
 
 void* smalloc(int size);
 
-int asciinum_to_int(char c);
+int asciinum_to_int(char* asciinum, int num_length);
+
+int asciichar_to_int(char c);
 
 //Manejar los codigo de error de HTTP
-void http_error_handler(char* http_code, char* url);
+int http_error_handler(char* http_code, char* url);
 #endif

@@ -1,7 +1,8 @@
-#include "parser.h"
-#include "entry_list.h"
 #include <stdlib.h>
 #include <stdio.h>
+
+#include "parser.h"
+#include "entry_list.h"
 
 //Funcion que parsea cada pagina descargada
 entry_node*
@@ -11,12 +12,17 @@ parser(char** pgs, unsigned short npgs){
   entry_node* entries = NULL;
   
   int i; //Variable de iteracion
+  int retc = 0; //Para guardar valores de retorno
 
   for(i = 0; i < npgs; ++i){
 
-    //Parsear pagina
-    int retc = parse(pgs[i],&entries);
-    //    printf("parsed html %d\n", i);//(FLAG)
+    //Parsear pagina.
+    //Algunas paginas pueden ser nulas
+    //si hubo un error descargandolas
+    if(pgs[i] != NULL){
+      retc = parse(pgs[i],&entries);
+    }
+    //printf("parsed html %d\n", i);//(FLAG)
 
     //Salir si hubo un error
     if(retc){
@@ -195,10 +201,11 @@ parse_url(char* pg_ptr, char** path, char** base_url){
   //Varibles para las expresiones regulares
   regmatch_t* matches = (regmatch_t*)smalloc(sizeof(regmatch_t)*3);
   regex_t* cpattern = (regex_t*)smalloc(sizeof(regex_t));
-  const char* pattern = "\(http://[\.a-zA-Z0-9]+\)\([a-zA-Z0-9/~]+\)";
+  const char* url_pattern = "\(http://[\.a-zA-Z0-9]+\)\([a-zA-Z0-9/~]+\)";
+  //const char* url_pattern = "a";
   
   //Compilar la expresion regular
-  ret = regcomp(cpattern,pattern,REG_EXTENDED);
+  ret = regcomp(cpattern,url_pattern,REG_EXTENDED);
   handle_regex_errors(ret);
 
   //Ejecutar la expresion regular

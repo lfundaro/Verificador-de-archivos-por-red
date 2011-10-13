@@ -14,6 +14,10 @@ int fetch(URL* url,char** pg_ptr);
 
 //Descarga una pagina HTTP en *(pg_ptr) usando el socket
 //apuntado por 'sock_des'
-char* download_page(char** pg_ptr, int sock_des,
-		    char* url_header, int url_header_sz);
+int download_page(char** pg_ptr, int sock_des,
+		  char* url_header, int url_header_sz);
+
+//Descarga el header de una respuesta HTTP
+//usando el socket apuntado por 'sock_des'
+char* download_header(int sock_des);
 #endif
