@@ -7,6 +7,7 @@
 #include <sys/types.h>
 #include <signal.h>
 #include <pthread.h>
+#include <search.h>
 
 
 #include "globals.h"
@@ -71,7 +72,7 @@ worker (void *arg)
           if (goWork)
             {
               // llamada a dispatcher
-              dispatcher (p->urlList);
+              dispatcher (p->urlList, p->eControl);
               goWork = 0;
               alarm (p->time); // Reactivar señal SIGALRM
             }
@@ -110,7 +111,14 @@ main (int argc, char **argv)
   URL *urlList;
   // Crear hash table
   hcreate (MAX_ENTRIES);
+  ENTRY *eControl[MAX_ENTRIES];
   
+  // Inicializar arreglo eControl
+  int i;
+  for (i = 0; i <= MAX_ENTRIES; i++)
+    eControl[i] = NULL;
+  
+
   opterr = 0;
 
   /********* BEGIN Manejo de Opciones por cónsola ******/
@@ -216,6 +224,7 @@ main (int argc, char **argv)
   struct workerInfo *wi = (workerInfo *) smalloc (sizeof (workerInfo));
   wi->time = time;
   wi->urlList = urlList;
+  wi->eControl = eControl;
 
   tStatus = pthread_create (&workerPID, NULL, worker, (void *) wi);
 
@@ -256,6 +265,7 @@ main (int argc, char **argv)
           sdown = 1;  // El thread termina
           pthread_join (workerPID, NULL); // Esperar a que thread termine
           bye (fd, urlList);
+          free_ENTRY (wi->eControl);
           free (wi);
           hdestroy ();
           sleep (2);

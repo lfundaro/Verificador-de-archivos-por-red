@@ -8,6 +8,7 @@
 #include "printer.h"
 
 //La tabla de hash es global.
-void dispatcher(URL* url_list);
+void 
+dispatcher(URL* url_list, ENTRY **eControl);
 
 #endif
