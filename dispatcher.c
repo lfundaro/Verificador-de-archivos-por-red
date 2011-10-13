@@ -15,7 +15,7 @@ dispatcher(URL* url_list)
 {
   int nurls = 0;
 
-  //  printf("FETCHER START\n"); //(FLAG)
+  //printf("FETCHER START\n"); //(FLAG)
   // Recuperar información del servidor HTTP
   char** pgs = fetcher(url_list,&nurls);
   //printf("FETCHER DONE\n"); //(FLAG)
@@ -25,7 +25,7 @@ dispatcher(URL* url_list)
   entry_node* entries = parser(pgs,nurls);
   //printf("PARSER DONE\n"); //(FLAG)
 
-  //  printf("DIFFER START\n"); //(FLAG)
+  //printf("DIFFER START\n"); //(FLAG)
   // Sacar diferencias entre archivos
   entry_node* diffs = differ(entries);
   //  printf("DIFFER DONE\n"); //(FLAG)

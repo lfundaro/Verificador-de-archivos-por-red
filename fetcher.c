@@ -27,7 +27,7 @@ fetcher(URL* url_list, int* nurls){
   for(li = url_list; li != NULL; li = li->next){
     //descargar pagina, se guarda en 'pgs'
     int retc = fetch(li,&(pgs[i]));
-    //    printf("fetched webpage %d\n",i); // (FLAG)
+    //printf("fetched webpage %d\n",i); // (FLAG)
 
     if (retc){
       (pgs[i]) = NULL;
@@ -138,7 +138,7 @@ download_page(char** pg_ptr, int sock_des,
   regmatch_t* matches = (regmatch_t*)smalloc(sizeof(regmatch_t)*2);
   regex_t* cpattern = (regex_t*)smalloc(sizeof(regex_t));
   const char* length_pattern = "Content-Length: \([0-9]+\)";
-  
+
   //Compilar la expresion regular
   ret = regcomp(cpattern,length_pattern,REG_EXTENDED);
   handle_regex_errors(ret);

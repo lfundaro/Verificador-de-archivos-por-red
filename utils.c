@@ -214,252 +214,252 @@ http_error_handler(char* http_code, char* url){
 
   switch(code){
   case 200:
-    //fprintf(stdout,"OK: %s\n",url);
+    //fprintf(stdout,"200 OK: %s\n",url);
     return 0;
     break;
 
   case 201:
-    //fprintf(stdout,"Creado: %s\n",url);
+    //fprintf(stdout,"201 Creado: %s\n",url);
     return 0;
     break;
 
   case 202:
-    //fprintf(stdout,"Aceptada: %s\n",url);
+    //fprintf(stdout,"202 Aceptada: %s\n",url);
     return 0;
     break;
 
   case 203:
-    //fprintf(stdout,"Información no autoritativa: %s\n",url);
+    //fprintf(stdout,"203 Información no autoritativa: %s\n",url);
     return 0;
     break;
     
   case 204:
-    //fprintf(stdout,"Sin contenido: %s\n",url);
+    //fprintf(stdout,"204 Sin contenido: %s\n",url);
     return 0;
     break;
 
   case 205:
-    //fprintf(stdout,"Recargar contenido: %s\n",url);
+    //fprintf(stdout,"205 Recargar contenido: %s\n",url);
     return 0;
     break;
 
   case 206:
-    //fprintf(stdout,"Contenido parcial: %s\n",url);
+    //fprintf(stdout,"206 Contenido parcial: %s\n",url);
     return 0;
     break;
 
   case 207:
-    //fprintf(stdout,"Estado múltiple: %s\n",url);
+    //fprintf(stdout,"207 Estado múltiple: %s\n",url);
     return 0;
     break;
     
   case 300:
-    fprintf(stdout,"Múltiples opciones: %s\n",url);
+    fprintf(stdout,"300 Múltiples opciones: %s\n",url);
     return 1;
     break;
     
   case 301:
-    fprintf(stdout,"Movido permanentemente: %s\n",url);
+    fprintf(stdout,"301 Movido permanentemente: %s\n",url);
     return 1;
     break;
 
   case 302:
-    fprintf(stdout,"Movido temporalmente: %s\n",url);
+    fprintf(stdout,"302 Movido temporalmente: %s\n",url);
     return 1;
     break;
 
   case 303:
-    fprintf(stdout,"Vea otra: %s\n",url);
+    fprintf(stdout,"303 Vea otra: %s\n",url);
     return 1;
     break;
 
   case 304:
-    fprintf(stdout,"No modificado: %s\n",url);
+    fprintf(stdout,"304 No modificado: %s\n",url);
     return 1;
     break;
 
   case 305:
-    fprintf(stdout,"Utilice un proxy: %s\n",url);
+    fprintf(stdout,"305 Utilice un proxy: %s\n",url);
     return 1;
     break;
 
   case 306:
-    fprintf(stdout,"Cambie de proxy: %s\n",url);
+    fprintf(stdout,"306 Cambie de proxy: %s\n",url);
     return 1;
     break;
 
   case 307:
-    fprintf(stdout,"Redirección temporal: %s\n",url);
+    fprintf(stdout,"307 Redirección temporal: %s\n",url);
     return 1;
     break;
     
   case 400:
-    fprintf(stdout,"Solicitud incorrecta: %s\n",url);
+    fprintf(stdout,"400 Solicitud incorrecta: %s\n",url);
     return 1;
     break;
 
   case 401:
-    fprintf(stdout,"No autorizado: %s\n",url);
+    fprintf(stdout,"401 No autorizado: %s\n",url);
     return 1;
     break;
 
   case 402:
-    fprintf(stdout,"Pago requerido: %s\n",url);
+    fprintf(stdout,"402 Pago requerido: %s\n",url);
     return 1;
     break;
 
   case 403:
-    fprintf(stdout,"Prohibido: %s\n",url);
+    fprintf(stdout,"403 Prohibido: %s\n",url);
     return 1;
     break;
 
   case 404:
-    fprintf(stdout,"No encontrado: %s\n",url);
+    fprintf(stdout,"404 No encontrado: %s\n",url);
     return 1;
     break;
 
   case 405:
-    fprintf(stdout,"Método no permitido: %s\n",url);
+    fprintf(stdout,"405 Método no permitido: %s\n",url);
     return 1;
     break;
     
   case 406:
-    fprintf(stdout,"No aceptable: %s\n",url);
+    fprintf(stdout,"406 No aceptable: %s\n",url);
     return 1;
     break;
 
   case 407:
-    fprintf(stdout,"Autenticación Proxy requerida: %s\n",url);
+    fprintf(stdout,"407 Autenticación Proxy requerida: %s\n",url);
     return 1;
     break;
     
   case 408:
-    fprintf(stdout,"Tiempo de espera agotado: %s\n",url);
+    fprintf(stdout,"408 Tiempo de espera agotado: %s\n",url);
     return 1;
     break;
 
   case 409:
-    fprintf(stdout,"Conflicto: %s\n",url);
+    fprintf(stdout,"409 Conflicto: %s\n",url);
     return 1;
     break;
 
   case 410:
-    fprintf(stdout,"Ya no disponible: %s\n",url);
+    fprintf(stdout,"410 Ya no disponible: %s\n",url);
     return 1;
     break;
 
   case 411:
-    fprintf(stdout,"Requiere longitud: %s\n",url);
+    fprintf(stdout,"411 Requiere longitud: %s\n",url);
     return 1;
     break;
 
   case 412:
-    fprintf(stdout,"Falló precondición: %s\n",url);
+    fprintf(stdout,"412 Falló precondición: %s\n",url);
     return 1;
     break;
     
   case 413:
-    fprintf(stdout,"Solicitud demasiado larga: %s\n",url);
+    fprintf(stdout,"413 Solicitud demasiado larga: %s\n",url);
     return 1;
     break;
 
   case 414:
-    fprintf(stdout,"URI demasiado larga: %s\n",url);
+    fprintf(stdout,"414 URI demasiado larga: %s\n",url);
     return 1;
     break;
 
   case 415:
-    fprintf(stdout,"Tipo de medio no soportado: %s\n",url);
+    fprintf(stdout,"415 Tipo de medio no soportado: %s\n",url);
     return 1;
     break;
 
   case 416:
-    fprintf(stdout,"Rango solicitado no disponible: %s\n",url);
+    fprintf(stdout,"416 Rango solicitado no disponible: %s\n",url);
     return 1;
     break;
 
   case 417:
-    fprintf(stdout,"Falló expectativa: %s\n",url);
+    fprintf(stdout,"417 Falló expectativa: %s\n",url);
     return 1;
     break;
     
   case 421:
-    fprintf(stdout,"Hay muchas conexiones desde esta dirección de internet: %s\n",url);
+    fprintf(stdout,"421 Hay muchas conexiones desde esta dirección de internet: %s\n",url);
     return 1;
     break;
     
   case 422:
-    fprintf(stdout,"Entidad no procesable: %s\n",url);
+    fprintf(stdout,"422 Entidad no procesable: %s\n",url);
     return 1;
     break;
 
   case 423:
-    fprintf(stdout,"Bloqueado: %s\n",url);
+    fprintf(stdout,"423 Bloqueado: %s\n",url);
     return 1;
     break;
 
   case 424:
-    fprintf(stdout,"Falló dependencia: %s\n",url);
+    fprintf(stdout,"424 Falló dependencia: %s\n",url);
     return 1;
     break;
     
   case 425:
-    fprintf(stdout,"Colección sin ordenar: %s\n",url);
+    fprintf(stdout,"425 Colección sin ordenar: %s\n",url);
     return 1;
     break;
     
   case 449:
-    fprintf(stdout,"Reintente con: %s\n",url);
+    fprintf(stdout,"449 Reintente con: %s\n",url);
     return 1;
     break;
 
   case 500:
-    fprintf(stdout,"Error interno: %s\n",url);
+    fprintf(stdout,"500 Error interno: %s\n",url);
     return 1;
     break;
 
   case 501:
-    fprintf(stdout,"No implementado: %s\n",url);
+    fprintf(stdout,"501 No implementado: %s\n",url);
     return 1;
     break;
 
   case 502:
-    fprintf(stdout,"Pasarela incorrecta: %s\n",url);
+    fprintf(stdout,"502 Pasarela incorrecta: %s\n",url);
     return 1;
     break;
 
   case 503:
-    fprintf(stdout,"Servicio no disponible: %s\n",url);
+    fprintf(stdout,"503 Servicio no disponible: %s\n",url);
     return 1;
     break;
 
   case 504:
-    fprintf(stdout,"Tiempo de espera de la pasarela agotado: %s\n",url);
+    fprintf(stdout,"504 Tiempo de espera de la pasarela agotado: %s\n",url);
     return 1;
     break;
 
   case 505:
-    fprintf(stdout,"Versión de HTTP no soportada: %s\n",url);
+    fprintf(stdout,"505 Versión de HTTP no soportada: %s\n",url);
     return 1;
     break;
     
   case 506:
-    fprintf(stdout,"Variante también negocia: %s\n",url);
+    fprintf(stdout,"506 Variante también negocia: %s\n",url);
     return 1;
     break;
     
   case 507:
-    fprintf(stdout,"Almacenamiento insuficiente: %s\n",url);
+    fprintf(stdout,"507 Almacenamiento insuficiente: %s\n",url);
     return 1;
     break;
 
   case 509:
-    fprintf(stdout,"Límite de ancho de banda excedido: %s\n",url);
+    fprintf(stdout,"509 Límite de ancho de banda excedido: %s\n",url);
     return 1;
     break;
     
   case 510:
-    fprintf(stdout,"No extendido: %s\n",url);
+    fprintf(stdout,"510 No extendido: %s\n",url);
     return 1;
     break;
   }
