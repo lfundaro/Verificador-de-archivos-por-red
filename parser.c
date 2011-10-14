@@ -22,7 +22,6 @@ parser(char** pgs, unsigned short npgs){
     if(pgs[i] != NULL){
       retc = parse(pgs[i],&entries);
     }
-    //printf("parsed html %d\n", i);//(FLAG)
 
     //Salir si hubo un error
     if(retc){
@@ -71,7 +70,6 @@ parse(char* pg, struct entry_node** list){
     //A~nadir la nueva entrada
     fileEntry e = parse_entry(pg_ptr,(*base_url),(*path),matches);
     *list = add_head(e,*list);
-    //   printf("%s\n",e.path);//(FLAG)
 
     //regex.h devuelve el primer match en el string.
     //Esto mueve el apuntador de la pagina al final de
@@ -79,7 +77,6 @@ parse(char* pg, struct entry_node** list){
     //otras entradas
     pg_ptr = pg_ptr + (*matches)[0].rm_eo;    
 
-    //printf("%s\n",pg_ptr);//(FLAG)
   }
 
   //Liberar memoria
@@ -122,10 +119,8 @@ match_entry(char* pg_ptr,regmatch_t** matches,regex_t** cpattern){
   //Ejecutar la expresion regular
   ret = regexec((*cpattern),pg_ptr,(1+REG_NMATCHES),(*matches),0);
   if(ret == REG_NOMATCH){
-    //    printf("Nothing found!!!\n");//(FLAG)
     return 0;//Retornar fracaso
   }
-  //printf("Something found!!!\n");//(FLAG)
   handle_regex_errors(ret);
 
   return 1;//Retornar exito
@@ -242,8 +237,6 @@ parse_url(char* pg_ptr, char** path, char** base_url){
   (*path) = (char*)smalloc(sizeof(char)*size);
   strncpy((*path),(url+start),size);
   (*path)[size-1] = '\0';
-  //  printf ("PATH %s \n", *path); // FLAG
-  //  printf ("BASE_URL %s \n", *base_url); //FLAG
 
   free(url);
   free(matches);

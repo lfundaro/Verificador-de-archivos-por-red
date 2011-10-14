@@ -72,7 +72,7 @@ worker (void *arg)
           if (goWork)
             {
               // llamada a dispatcher
-              dispatcher (p->urlList, p->eControl);
+              dispatcher (p->urlList, &p->controlNodes);
               goWork = 0;
               alarm (p->time); // Reactivar señal SIGALRM
             }
@@ -111,13 +111,6 @@ main (int argc, char **argv)
   URL *urlList;
   // Crear hash table
   hcreate (MAX_ENTRIES);
-  ENTRY *eControl[MAX_ENTRIES];
-  
-  // Inicializar arreglo eControl
-  int i;
-  for (i = 0; i <= MAX_ENTRIES; i++)
-    eControl[i] = NULL;
-  
 
   opterr = 0;
 
@@ -224,7 +217,7 @@ main (int argc, char **argv)
   struct workerInfo *wi = (workerInfo *) smalloc (sizeof (workerInfo));
   wi->time = time;
   wi->urlList = urlList;
-  wi->eControl = eControl;
+  wi->controlNodes = NULL;
 
   tStatus = pthread_create (&workerPID, NULL, worker, (void *) wi);
 
@@ -265,7 +258,7 @@ main (int argc, char **argv)
           sdown = 1;  // El thread termina
           pthread_join (workerPID, NULL); // Esperar a que thread termine
           bye (fd, urlList);
-          free_ENTRY (wi->eControl);
+          free_ENTRY (&wi->controlNodes);
           free (wi);
           hdestroy ();
           sleep (2);

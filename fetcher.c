@@ -27,7 +27,6 @@ fetcher(URL* url_list, int* nurls){
   for(li = url_list; li != NULL; li = li->next){
     //descargar pagina, se guarda en 'pgs'
     int retc = fetch(li,&(pgs[i]));
-    //    printf("fetched webpage %d\n",i); // (FLAG)
 
     if (retc){
       (pgs[i]) = NULL;
@@ -45,7 +44,7 @@ fetch(URL* url, char** pg_ptr){
   int sock_des = 0;//descriptor de archivo que retorna socket()
   int ret = 0; //para guardar valores de retorno
 
-  //Cabecera que sera a~nadida al tope del HTML descargado
+  //Cabecera que sera añadida al tope del HTML descargado
   //para que el parser sepa el URL de las entradas
   int url_header_sz = strlen(url->dir) + 1;
   char* url_header = (char*)smalloc(sizeof(char)*(url_header_sz));
@@ -85,8 +84,6 @@ fetch(URL* url, char** pg_ptr){
   strcat(http_get,aux_get_second);
   int get_len = strlen(http_get);
 
-  //  printf("%s\n",http_get);//(FLAG)
-
   //Enviar paquete HTTP
   ret = write(sock_des, (void*)http_get, get_len);
   if(ret < 0){
@@ -104,8 +101,6 @@ fetch(URL* url, char** pg_ptr){
   }
 
   // Imprimir pagina descargada
-  //  printf("%s\n",*(pg_ptr)); (FLAG)
-
   free(url_header);
   free(http_get);
 
@@ -122,8 +117,6 @@ download_page(char** pg_ptr, int sock_des,
 
   char* http_header = download_header(sock_des);
 
-  //(  printf("HTTP_HEADER_BEGIN\n%s\nHTTP_HEADER_END\n",http_header);//(FLAG)
-
   //Recuperar codigo HTTP y manejarlo
   char http_code[3];
   http_code[0] = http_header[8 + 1];
@@ -134,7 +127,7 @@ download_page(char** pg_ptr, int sock_des,
     return 1;
   }
 
-  /*Recuperar el tama~no de contenido de la respuesta HTTP*/
+  /*Recuperar el tamaño de contenido de la respuesta HTTP*/
   regmatch_t* matches = (regmatch_t*)smalloc(sizeof(regmatch_t)*2);
   regex_t* cpattern = (regex_t*)smalloc(sizeof(regex_t));
   const char* length_pattern = "Content-Length: \([0-9]+\)";
@@ -146,7 +139,7 @@ download_page(char** pg_ptr, int sock_des,
   //Ejecutar la expresion regular
   ret = regexec(cpattern,http_header,2,matches,0);
   if(ret == REG_NOMATCH){
-    fprintf(stdout,"No se encontro el tama~no del contenido en la respuesta HTTP\n");
+    fprintf(stdout,"No se encontro el tamaño del contenido en la respuesta HTTP\n");
     exit(EXIT_FAILURE);
   }
   handle_regex_errors(ret);
@@ -155,15 +148,14 @@ download_page(char** pg_ptr, int sock_des,
   int length_size =  matches[1].rm_eo - matches[1].rm_so;
   int content_length = asciinum_to_int((http_header + length_start), length_size);
 
-  //  printf("Recovered length %d\n",content_length);//(FLAG)
 
-  /*Descargar pagina web*/
+  /*Descargar página web*/
   (*pg_ptr) = (char*)smalloc(sizeof(char)*(url_header_sz + content_length + 1));//'+ 1' por el byte nulo
   char* write_ptr = (*pg_ptr);
   ssize_t pending_bytes = content_length;
   ssize_t read_bytes = 0;
 
-  //A~nadir la cabecera para que el
+  //Añadir la cabecera para que el
   //parser sepa el URL de las entradas
   strcpy((*pg_ptr),url_header);
   (*pg_ptr)[url_header_sz-1] = '\n';
@@ -181,8 +173,6 @@ download_page(char** pg_ptr, int sock_des,
 
   *(write_ptr) = '\0';//Byte nulo de terminacion
 
-  //printf("%s\n",(*pg_ptr));//(FLAG)
-
   regfree(cpattern);
   free(cpattern);
   free(matches);
@@ -194,18 +184,18 @@ download_page(char** pg_ptr, int sock_des,
 //usando el socket apuntado por 'sock_des'
 char*
 download_header(int sock_des){
-  /**Lee el header HTTP en bloques de tama~no 'blck_sz'**/
+  /**Lee el header HTTP en bloques de tamaño 'blck_sz'**/
 
-  //Tama~no de bloque
+  //Tamaño de bloque
   int blck_sz = 200;
 
   //Cantidad de bytes por leer del bloque actual
   int pending_sz = blck_sz;
 
-  //Tama~no maximo del bufer. Crece con el numero de bloques que se agregan
+  //Tamaño maximo del bufer. Crece con el numero de bloques que se agregan
   int max_buff_sz = blck_sz;
 
-  //Tama~no actual del bufer. Cantidad de bytes en uso.
+  //Tamaño actual del bufer. Cantidad de bytes en uso.
   int total_buff_sz = 0;
 
   //Reserva inicial de espacio para la pagina
@@ -234,7 +224,7 @@ download_header(int sock_des){
 	  )&&
 	((read_bytes = read(sock_des,write_ptr,1)) > 0)){
 
-    //Actualizar detector de lineas vacias
+    //Actualizar detector de líneas vacías
     empty_line_detector[i] = (*write_ptr);
     i = (i+1) % 4;
 
@@ -242,7 +232,7 @@ download_header(int sock_des){
     pending_sz -= read_bytes;
     total_buff_sz += read_bytes;
 
-    //Si el tama~no del buffer alcanzo el maximo
+    //Si el tamaño del buffer alcanzó el máximo
     if(total_buff_sz == max_buff_sz){
 
       //Crear un nuevo bufer ('+ 1' por el byte nulo)
@@ -254,7 +244,7 @@ download_header(int sock_des){
       http_header = t;
       write_ptr = http_header+total_buff_sz;
 
-      //Actualizar la cantidad de bytes por leer y el tama~no maximo
+      //Actualizar la cantidad de bytes por leer y el tamaño máximo
       pending_sz = blck_sz;
       max_buff_sz += blck_sz;
     }
@@ -265,7 +255,7 @@ download_header(int sock_des){
     exit(EXIT_FAILURE);
   }
 
-  *(write_ptr) = '\0';//Byte nulo de terminacion
+  *(write_ptr) = '\0';//Byte nulo de terminación
 
   return http_header;
 }
