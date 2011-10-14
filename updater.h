@@ -4,9 +4,9 @@
 #include "data_structures.h"
 
 void 
-update(struct fileEntry, ENTRY **eControl);
+update(struct fileEntry,  eControl **controlNodes);
 
 void 
-updater(entry_node*, ENTRY **eControl);
+updater(entry_node*, eControl **controlNodes);
 
 #endif
