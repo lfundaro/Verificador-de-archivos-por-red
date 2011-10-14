@@ -181,12 +181,13 @@ void
 free_ENTRY (ENTRY **eControl)
 {
   int i;
-  for (i = 0; i <= MAX_ENTRIES && eControl[i] != NULL; i++)
+  for (i = 0; (i <= MAX_ENTRIES) && (eControl[i] != NULL); i++)
     {
       free (eControl[i]->key);
       free (eControl[i]->data);
       free (eControl[i]);
     }
+
   return;
 }
 

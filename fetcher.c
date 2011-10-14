@@ -26,7 +26,7 @@ fetcher(URL* url_list, int* nurls){
   for(li = url_list; li != NULL; li = li->next){
     //descargar pagina, se guarda en 'pgs'
     int retc = fetch(li,&(pgs[i]));
-    //printf("fetched webpage %d\n",i); // (FLAG)
+    //    printf("fetched webpage %d\n",i); // (FLAG)
 
     if (retc){
       (pgs[i]) = NULL;
@@ -100,8 +100,8 @@ fetch(URL* url, char** pg_ptr){
     return 1;
   }
 
-  //(FLAG) Imprimir pagina descargada
-  //  printf("%s\n",*(pg_ptr));
+  // Imprimir pagina descargada
+  //  printf("%s\n",*(pg_ptr)); (FLAG)
 
   free(url_header);
   free(http_get);
@@ -117,7 +117,7 @@ download_page(char** pg_ptr, int sock_des,
 
   char* http_header = download_header(sock_des);
 
-  //printf("HTTP_HEADER_BEGIN\n%s\nHTTP_HEADER_END\n",http_header);//(FLAG)
+  //(  printf("HTTP_HEADER_BEGIN\n%s\nHTTP_HEADER_END\n",http_header);//(FLAG)
 
   //Recuperar codigo HTTP y manejarlo
   char http_code[3];
@@ -150,7 +150,7 @@ download_page(char** pg_ptr, int sock_des,
   int length_size =  matches[1].rm_eo - matches[1].rm_so;
   int content_length = asciinum_to_int((http_header + length_start), length_size);
 
-  //printf("Recovered length %d\n",content_length);//(FLAG)
+  //  printf("Recovered length %d\n",content_length);//(FLAG)
 
   /*Descargar pagina web*/
   (*pg_ptr) = (char*)smalloc(sizeof(char)*(url_header_sz + content_length + 1));//'+ 1' por el byte nulo
@@ -182,6 +182,7 @@ download_page(char** pg_ptr, int sock_des,
   free(cpattern);
   free(matches);
   free(http_header);
+  return 0;
 }
 
 char*

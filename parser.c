@@ -201,8 +201,7 @@ parse_url(char* pg_ptr, char** path, char** base_url){
   //Varibles para las expresiones regulares
   regmatch_t* matches = (regmatch_t*)smalloc(sizeof(regmatch_t)*3);
   regex_t* cpattern = (regex_t*)smalloc(sizeof(regex_t));
-  const char* url_pattern = "\(http://[\.a-zA-Z0-9]+\)\([a-zA-Z0-9/~]+\)";
-  //const char* url_pattern = "a";
+  const char* url_pattern = "\(http://[\.a-zA-Z0-9]+\)\([a-zA-Z0-9/~_]+\)";
   
   //Compilar la expresion regular
   ret = regcomp(cpattern,url_pattern,REG_EXTENDED);
@@ -243,6 +242,8 @@ parse_url(char* pg_ptr, char** path, char** base_url){
   (*path) = (char*)smalloc(sizeof(char)*size);
   strncpy((*path),(url+start),size);
   (*path)[size-1] = '\0';
+  //  printf ("PATH %s \n", *path); // FLAG
+  //  printf ("BASE_URL %s \n", *base_url); //FLAG
 
   free(url);
   free(matches);
