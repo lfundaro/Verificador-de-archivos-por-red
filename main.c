@@ -1,3 +1,19 @@
+/****************************************************************/
+/* Primer Proyecto de Redes de Computadoras                     */
+/* Autores: Lorenzo Fundaró 06-39559                            */
+/*          Germán Jaber. 06-39749                              */
+/* Descripción general:                                         */
+/*     Este proyecto es la implementación de un comando         */
+/* llamado verific que se conecta con un servidor HTTP          */
+/* para verificar la existencia de nuevos archivos o su         */
+/* modificación.                                                */
+/* Para instrucciones de uso se recomienda teclear en la        */
+/* consola el comando verific como se indica a continuación:    */
+/*  $> ./verific                                                */
+/* A continuación se presentarán las instrucciones del comando. */
+/****************************************************************/
+
+
 #include <ctype.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -220,9 +236,16 @@ main (int argc, char **argv)
   wi->controlNodes = NULL;
 
   tStatus = pthread_create (&workerPID, NULL, worker, (void *) wi);
+  if (tStatus == 0)
+    {
+      perror("Error creando hilo: ");
+      exit (EXIT_FAILURE);
+    }
 
   // Binding de señal SIGARLM con función SIGALRM_control 
-  signal (SIGALRM, SIGALRM_control);  
+  sighandler_t sigStatus = signal (SIGALRM, SIGALRM_control);  
+  if (sigStatus == SIG_ERR)
+    perror ("Error haciendo binding de señal con función: ");
   alarm (time); // primera llamada al worker
   // Código de hilo principal
   printf ("Comienzo del programa: \n");
