@@ -34,8 +34,8 @@ int http_error_handler(char* http_code, char* url);
 
 // Agrega apuntador ENTRY a la lista de control 
 void 
-add_eControl (ENTRY *p, ENTRY * *eControl);
+add_eControl (ENTRY *p, eControl **controlNodes);
 
 void 
-free_ENTRY (ENTRY **eControl);
+free_ENTRY (eControl **controlNodes);
 #endif

@@ -2,8 +2,8 @@
 #include "globals.h"
 #define URL_MAX_SIZE 2048
 
-// Extrae las lÃ­neas especificadas en el archivo 
-// y almacena la informaciÃ³n en la estructura URL. 
+// Extrae las líneas especificadas en el archivo 
+// y almacena la información en la estructura URL. 
 URL *
 parseFile (FILE* fd) 
 {
@@ -15,7 +15,7 @@ parseFile (FILE* fd)
   URL *head = NULL;
   int i;
   
-  // Leer lÃ­nea por lÃ­nea de archivo
+  // Leer línea por línea de archivo
   while ((chars_read = getline (&input_line, &char_size, fd)) != -1)
     {
       // Pedir e inicializar memoria para estructuras
@@ -42,9 +42,9 @@ parseFile (FILE* fd)
     }
   
   if (clines == 0) 
-    {// no hay lÃ­neas en archivo
+    {// no hay líneas en archivo
       free (curr);
-      puts ("Archivo vacÃ­o");
+      puts ("Archivo vacío");
       exit (EXIT_FAILURE);
     }
 
@@ -72,8 +72,8 @@ free_URL (URL *url_list)
 }
 
 // Verifica si el directorio especificado por el usuario 
-// con la opciÃ³n -d existe dentro del archivo especificado 
-// por la opciÃ³n -a
+// con la opción -d existe dentro del archivo especificado 
+// por la opción -a
 int 
 file_lookup (char *dir, URL *urlList) 
 {
@@ -166,28 +166,30 @@ handle_regex_errors(int errcode){
 // que se almacena en la tabla de hash para después 
 // liberar dicho apuntador con todas sus subestructuras 
 void 
-add_eControl (ENTRY *p, ENTRY **eControl)
+add_eControl (ENTRY *p, eControl **controlNodes)
 {
-  int i;
-  for (i = 0; eControl[i] != NULL; i++);
-  if (i <= MAX_ENTRIES)
-    eControl[i] = p;
+  eControl *x = (eControl *) smalloc (sizeof (eControl));
+  x->node = p;
+  x->next = *controlNodes;
+  *controlNodes = x;
   return;
 }
 
 // Función que libera los datos guardados dentro de la 
 // tabla de hash.
 void
-free_ENTRY (ENTRY **eControl)
+free_ENTRY (eControl **controlNodes)
 {
-  int i;
-  for (i = 0; (i <= MAX_ENTRIES) && (eControl[i] != NULL); i++)
+  eControl *tmp;
+  while (*controlNodes)
     {
-      free (eControl[i]->key);
-      free (eControl[i]->data);
-      free (eControl[i]);
+      tmp = (*controlNodes)->next;
+      free ((*controlNodes)->node->key);
+      free ((*controlNodes)->node->data);
+      free ((*controlNodes)->node);
+      free (*controlNodes);
+      *controlNodes = tmp;
     }
-
   return;
 }
 
