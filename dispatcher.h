@@ -9,6 +9,6 @@
 
 //La tabla de hash es global.
 void 
-dispatcher(URL* url_list, ENTRY **eControl);
+dispatcher(URL* url_list, eControl **controlNodes);
 
 #endif

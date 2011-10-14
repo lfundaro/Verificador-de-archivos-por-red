@@ -11,23 +11,21 @@
 // printer se encarga de notificar por cónsola los cambios de archivos
 // o si existe un nuevo archivo.
 void
-dispatcher(URL* url_list, ENTRY **eControl)
+dispatcher(URL* url_list,  eControl **controlNodes)
 {
   int nurls = 0;
 
-  //printf("FETCHER START\n"); //(FLAG)
   // Recuperar información del servidor HTTP
   char** pgs = fetcher(url_list,&nurls);
 
   // Extraer información necesaria del HTML
   entry_node* entries = parser(pgs,nurls);
 
-  //printf("DIFFER START\n"); //(FLAG)
   // Sacar diferencias entre archivos
   entry_node* diffs = differ(entries);
 
   // Actualizar entradas de tabla de hash 
-  updater(diffs, eControl);
+  updater(diffs, controlNodes);
 
   // Imprimir resultados
   printer(diffs);
