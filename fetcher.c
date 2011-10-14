@@ -5,7 +5,6 @@
 #include "fetcher.h"
 #include "regex.h"
 
-//Funcion que descarga las paginas HTTP que se encuentran en el arreglo 'addrs'
 char**
 fetcher(URL* url_list, int* nurls){
   //variables de iteracion
@@ -38,8 +37,6 @@ fetcher(URL* url_list, int* nurls){
   return pgs;
 }
 
-//Funcion que descarga una pagina HTTP
-//en el bufer '*(pg_ptr)' desde la direccion 'pg_addr'
 int
 fetch(URL* url, char** pg_ptr){
   int sock_des = 0;//descriptor de archivo que retorna socket()
@@ -113,8 +110,6 @@ fetch(URL* url, char** pg_ptr){
   return 0;
 }
 
-//Descarga una pagina HTTP en '*(pg_ptr)' usando el socket
-//apuntado por 'sock_des'
 int
 download_page(char** pg_ptr, int sock_des,
 	      char* url_header, int url_header_sz){
@@ -189,11 +184,9 @@ download_page(char** pg_ptr, int sock_des,
   free(http_header);
 }
 
-//Descarga el header de una respuesta HTTP
-//usando el socket apuntado por 'sock_des'
 char*
 download_header(int sock_des){
-  /**Lee el header HTTP en bloques de tama~no 'blck_sz'**/
+  /*Lee el header HTTP en bloques de tama~no 'blck_sz'*/
 
   //Tama~no de bloque
   int blck_sz = 200;
