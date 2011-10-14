@@ -41,6 +41,17 @@ struct URL
   struct URL *next;
 };
 
+// Lista enlazada de apuntadores que se usan 
+// para consultar o insertar un elemento en 
+// la tabla de hash.
+struct eControl typedef eControl;
+
+struct eControl
+{
+  ENTRY *node;
+  eControl *next;
+};
+
 // La estructura workerInfo se utiliza para solucionar 
 // la limitante que tienen las funciones threads en C 
 // las cuales se les pueden pasar un único argumento.
@@ -50,7 +61,8 @@ struct workerInfo
 {
   unsigned int time;
   struct URL* urlList;
-  ENTRY **eControl;
+  eControl *controlNodes;
 };
+
 
 #endif
