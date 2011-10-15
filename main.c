@@ -243,9 +243,8 @@ main (int argc, char **argv)
     }
 
   // Binding de señal SIGARLM con función SIGALRM_control 
-  sighandler_t sigStatus = signal (SIGALRM, SIGALRM_control);  
-  if (sigStatus == SIG_ERR)
-    perror ("Error haciendo binding de señal con función: ");
+  if (signal (SIGALRM, SIGALRM_control) == SIG_ERR)
+    perror ("Error haciendo binding de señal con función: ");    
   alarm (time); // primera llamada al worker
   // Código de hilo principal
   printf ("Comienzo del programa: \n");
