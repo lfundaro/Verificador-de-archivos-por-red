@@ -4,7 +4,6 @@
 #include "parser.h"
 #include "entry_list.h"
 
-//Funcion que parsea cada pagina descargada
 entry_node*
 parser(char** pgs, unsigned short npgs){
 
@@ -46,7 +45,6 @@ parser(char** pgs, unsigned short npgs){
   return entries;
 }
 
-//Funcion que parsea una pagina
 int
 parse(char* pg, struct entry_node** list){
   char** base_url = (char**)smalloc(sizeof(char*));
@@ -99,7 +97,6 @@ parse(char* pg, struct entry_node** list){
   return 0; //Retornar exito
 }
 
-//Funcion que hace match con la ultima entrada del HTML
 int
 match_entry(char* pg_ptr,regmatch_t** matches,regex_t** cpattern){
   int ret; //Para guardar valores de retorno
@@ -126,7 +123,6 @@ match_entry(char* pg_ptr,regmatch_t** matches,regex_t** cpattern){
   return 1;//Retornar exito
 }
 
-//Funcion que construye un 'struct fileEntry' a partir de una entrada en el HTML
 fileEntry
 parse_entry(char* pg_ptr, char* base_url, char* path,
 	    regmatch_t** matches){
@@ -167,13 +163,12 @@ parse_entry(char* pg_ptr, char* base_url, char* path,
   e.size = entry_size;
 
   /***Agregar URL***/
-  e.URL = (char*)smalloc(sizeof(char)*(strlen(base_url)+1));//+1 por el byte de terminacion
+  e.URL = (char*)smalloc(sizeof(char)*(strlen(base_url)+1));
   strcpy(e.URL,base_url);
 
   return e;
 }
 
-//Funcion que parsea la URL agregada por fetcher al principio de cada HTML
 void
 parse_url(char* pg_ptr, char** path, char** base_url){
   int url_len = 0;
@@ -246,7 +241,6 @@ parse_url(char* pg_ptr, char** path, char** base_url){
   return;
 }
 
-//Funcion que recupera un subcampo de un match de la expresion regular
 char*
 get_data(int data_pos,char* pg_ptr,regmatch_t** matches){
 

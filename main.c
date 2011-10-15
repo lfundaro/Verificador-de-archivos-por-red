@@ -1,16 +1,16 @@
 /****************************************************************/
 /* Primer Proyecto de Redes de Computadoras                     */
-/* Autores: Lorenzo Fundar√≥ 06-39559                            */
-/*          Germ√°n Jaber. 06-39749                              */
-/* Descripci√≥n general:                                         */
-/*     Este proyecto es la implementaci√≥n de un comando         */
+/* Autores: Lorenzo FundarÛ 06-39559                            */
+/*          Germ·n Jaber. 06-39749                              */
+/* DescripciÛn general:                                         */
+/*     Este proyecto es la implementaciÛn de un comando         */
 /* llamado verific que se conecta con un servidor HTTP          */
 /* para verificar la existencia de nuevos archivos o su         */
-/* modificaci√≥n.                                                */
+/* modificaciÛn.                                                */
 /* Para instrucciones de uso se recomienda teclear en la        */
-/* consola el comando verific como se indica a continuaci√≥n:    */
+/* consola el comando verific como se indica a continuaciÛn:    */
 /*  $> ./verific                                                */
-/* A continuaci√≥n se presentar√°n las instrucciones del comando. */
+/* A continuaciÛn se presentar·n las instrucciones del comando. */
 /****************************************************************/
 
 

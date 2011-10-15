@@ -134,18 +134,21 @@ download_page(char** pg_ptr, int sock_des,
   //Ejecutar la expresion regular
   ret = regexec(cpattern,http_header,2,matches,0);
   if(ret == REG_NOMATCH){
-    fprintf(stdout,"No se encontro el tamaño del contenido en la respuesta HTTP\n");
+    fprintf(stdout,"\
+No se encontro el tama�o del contenido en la respuesta HTTP\n");
+
     exit(EXIT_FAILURE);
   }
   handle_regex_errors(ret);
 
   int length_start = matches[1].rm_so;
   int length_size =  matches[1].rm_eo - matches[1].rm_so;
-  int content_length = asciinum_to_int((http_header + length_start), length_size);
+  int content_length = asciinum_to_int((http_header + length_start),
+				       length_size);
 
 
-  /*Descargar página web*/
-  (*pg_ptr) = (char*)smalloc(sizeof(char)*(url_header_sz + content_length + 1));//'+ 1' por el byte nulo
+  /*Descargar p�gina web*/
+  (*pg_ptr) = (char*)smalloc(sizeof(char)*(url_header_sz + content_length + 1));
   char* write_ptr = (*pg_ptr);
   ssize_t pending_bytes = content_length;
   ssize_t read_bytes = 0;
@@ -193,7 +196,7 @@ download_header(int sock_des){
   int total_buff_sz = 0;
 
   //Reserva inicial de espacio para la pagina
-  char* http_header = (char*)smalloc(sizeof(char)*(blck_sz + 1));//'+ 1' por el byte nulo
+  char* http_header = (char*)smalloc(sizeof(char)*(blck_sz + 1));
 
   //Apuntador donde escribira read()
   char* write_ptr = http_header;
@@ -238,7 +241,7 @@ download_header(int sock_des){
       http_header = t;
       write_ptr = http_header+total_buff_sz;
 
-      //Actualizar la cantidad de bytes por leer y el tamaño máximo
+      //Actualizar la cantidad de bytes por leer y el tamaño m�ximo
       pending_sz = blck_sz;
       max_buff_sz += blck_sz;
     }
@@ -249,7 +252,7 @@ download_header(int sock_des){
     exit(EXIT_FAILURE);
   }
 
-  *(write_ptr) = '\0';//Byte nulo de terminación
+  *(write_ptr) = '\0';//Byte nulo de terminaci�n
 
   return http_header;
 }

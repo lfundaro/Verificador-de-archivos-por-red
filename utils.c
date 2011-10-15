@@ -109,23 +109,33 @@ handle_regex_errors(int errcode){
     return;
 
   case REG_BADBR:
-    fprintf(stdout,"regex: There was an invalid '\\{...\\}' construct in the regular expression. A valid '\\{...\\}' construct must contain either a single number, or two numbers in increasing order separated by a comma.\n");
+    fprintf(stdout,"\
+regex: There was an invalid '\\{...\\}' construct in the regular expression. \
+A valid '\\{...\\}' construct must contain either a single number, or two \
+numbers in increasing order separated by a comma.\n");
     break;
 
   case REG_BADPAT:
-    fprintf(stdout,"regex: There was a syntax error in the regular expression.\n");
+    fprintf(stdout,"\
+regex: There was a syntax error in the regular expression.\n");
     break;
 
   case REG_BADRPT:
-    fprintf(stdout,"regex: A repetition operator such as '?' or '*' appeared in a bad position (with no preceding subexpression to act on).\n");
+    fprintf(stdout,"\
+regex: A repetition operator such as '?' or '*' appeared in a bad position \
+(with no preceding subexpression to act on).\n");
     break;
 
   case REG_ECOLLATE:
-    fprintf(stdout,"regex: The regular expression referred to an invalid collating element (one not defined in the current locale for string collation). See Locale Categories.\n");
+    fprintf(stdout,"\
+regex: The regular expression referred to an invalid collating element \
+(one not defined in the current locale for string collation). \
+See Locale Categories.\n");
     break;
 
   case REG_ECTYPE:
-    fprintf(stdout,"regex: The regular expression referred to an invalid character class name.\n");
+    fprintf(stdout,"\
+regex: The regular expression referred to an invalid character class name.\n");
     break;
 
   case REG_EESCAPE:
@@ -133,23 +143,29 @@ handle_regex_errors(int errcode){
     break;
 
   case REG_ESUBREG:
-    fprintf(stdout,"regex: There was an invalid number in the '\\digit' construct.\n");
+    fprintf(stdout,"\
+regex: There was an invalid number in the '\\digit' construct.\n");
     break;
 
   case REG_EBRACK:
-    fprintf(stdout,"regex: There were unbalanced square brackets in the regular expression.\n");
+    fprintf(stdout,"\
+regex: There were unbalanced square brackets in the regular expression.\n");
     break;
 
   case REG_EPAREN:
-    fprintf(stdout,"regex: An extended regular expression had unbalanced parentheses, or a basic regular expression had unbalanced '\\(' and '\\)'.\n");
+    fprintf(stdout,"\
+regex: An extended regular expression had unbalanced parentheses, or a basic \
+regular expression had unbalanced '\\(' and '\\)'.\n");
     break;
 
   case REG_EBRACE:
-    fprintf(stdout,"regex: The regular expression had unbalanced '\\{' and '\\}'.\n");
+    fprintf(stdout,"\
+regex: The regular expression had unbalanced '\\{' and '\\}'.\n");
     break;
 
   case REG_ERANGE:
-    fprintf(stdout,"regex: One of the endpoints in a range expression was invalid.\n");
+    fprintf(stdout,"\
+regex: One of the endpoints in a range expression was invalid.\n");
     break;
 
   case REG_ESPACE:
@@ -233,6 +249,8 @@ asciichar_to_int(char c){
   case '8': return 8;
   case '9': return 9;
   }
+
+  return -1;
 }
 
 int
@@ -416,7 +434,8 @@ http_error_handler(char* http_code, char* url){
     break;
     
   case 421:
-    fprintf(stdout,"421 Hay muchas conexiones desde esta dirección de internet: %s\n",url);
+    fprintf(stdout,"\
+421 Hay muchas conexiones desde esta dirección de internet: %s\n",url);
     return 1;
     break;
     

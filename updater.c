@@ -5,9 +5,8 @@
 #include <string.h>
 
 // Actualiza tabla de hash en caso de encontrar un archivo nuevo
-// o una modificaciÃ³n.
-void 
-update(struct fileEntry e, eControl **controlNodes)
+// o una modificación.
+void update(struct fileEntry e, eControl **controlNodes)
 {
   if (e.dt == NODIFF)
     return;
