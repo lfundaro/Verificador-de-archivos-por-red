@@ -236,7 +236,7 @@ main (int argc, char **argv)
   wi->controlNodes = NULL;
 
   tStatus = pthread_create (&workerPID, NULL, worker, (void *) wi);
-  if (tStatus == 0)
+  if (tStatus != 0)
     {
       perror("Error creando hilo: ");
       exit (EXIT_FAILURE);
