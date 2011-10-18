@@ -79,4 +79,58 @@ int download_page(char** pg_ptr, int sock_des,
    \return Apuntador al buffer donde se guardará el header.
 */
 char* download_header(int sock_des);
+
+
+
+/**
+   Descarga el contenido de una respuesta HTTP, usando el socket
+   apuntado por 'sock_des', en un buffer de tamaño clength y 
+   devuelve el apuntador del buffer.
+
+   \brief Descarga el contenido de una respuesta HTTP.
+
+   \param sock_des Socket desde donde se leerá el header.
+
+   \param content String en donde se descargará el contenido.
+
+   \param clength Tamaño en bytes del contenido a descargar.
+
+   \param url_header %URL que fue solicitado y que será concatenado
+                     al principio del contenido a descargar.
+
+   \param url_header_sz Tamaño en bytes del %URL que será concatenado.
+
+   \return Código de error. Cero significa exitoso.
+*/
+int download_body_clength(int sock_des, char** content,
+			  int clength, char* url_header,
+			  int url_header_sz);
+
+
+
+/**
+   Descarga el contenido de una respuesta HTTP de tamaño desconocido,
+   usando el socket apuntado por 'sock_des', en un buffer y devuelve
+   el apuntador del buffer.
+
+   \brief Descarga el contenido de una respuesta HTTP.
+
+   \param sock_des Socket desde donde se leerá el header.
+
+   \param content String en donde se descargará el contenido.
+
+   \param blck_sz La función descargará el contenido en bloques
+   de tamaño 'blk_sz' bytes hasta que no quede contenido en el
+   soket.
+
+   \param url_header %URL que fue solicitado y que será concatenado
+                     al principio del contenido a descargar.
+
+   \param url_header_sz Tamaño en bytes del %URL que será concatenado.
+
+   \return Código de error. Cero significa exitoso.
+*/
+int download_body_no_clength(int sock_des, char** content, 
+			     int blck_sz, char* url_header,
+			     int url_header_sz);
 #endif

@@ -34,17 +34,18 @@
 #define MAX_ENTRIES 200
 
 /***/
-//Para el public_html del prof.Ricardo
-//#define PATTERN "<a href=\"\([^\"]+\)\">[^<>]+</a>/?[ \t]+\([1-2][0-9]-[A-Z][a-z][a-z]-[1-2][0-9][0-9][0-9] [0-2][0-9]:[0-5][0-9]\)[ \t]+\(-*[0-9]*\)"
-
-//Para la laptop de German
-//#define PATTERN "<a href=\"\([^\"]+\)\">[^<>]+</a>/?</td><td[^<>]+>\([1-2][0-9][0-9][0-9]-[A-Z][a-z][a-z]-[0-9][0-9] [0-2][0-9]:[0-5][0-9]:[0-5][0-9]\)</td><td[^<>]+>\([0-9]+\.[0-9]+\)"
-
-/** ExpresiÃ³n regular que hace match con una entrada de archivo */
 //Para cancer
 #define PATTERN "\
 <a href=\"\([^\"]+\)\">[^<>]+</a>/?</td><td[^<>]+>\
 \([1-2][0-9][0-9][0-9]-[A-Z][a-z][a-z]-[0-9][0-9] \
 [0-2][0-9]:[0-5][0-9]:[0-5][0-9]\)</td><td[^<>]+>\
 \([0-9]*\.?[0-9]*-?\)"
+
+//Para la laptop de German
+//#define PATTERN "<a href=\"\([^\"]+\)\">[^<>]+</a>/?</td><td[^<>]+>\([1-2][0-9][0-9][0-9]-[A-Z][a-z][a-z]-[0-9][0-9] [0-2][0-9]:[0-5][0-9]:[0-5][0-9]\)</td><td[^<>]+>\([0-9]+\.[0-9]+\)"
+
+/** Expresión regular que hace match con una entrada de archivo */
+#define PATTERN "<a href=\"\([^\"]+\)\">[^<>]+</a>/?\
+[ \t]+\([1-2][0-9]-[A-Z][a-z][a-z]-[1-2][0-9][0-9][0-9] \
+[0-2][0-9]:[0-5][0-9]\)[ \t]+\(-*[0-9]*\)"
 #endif
