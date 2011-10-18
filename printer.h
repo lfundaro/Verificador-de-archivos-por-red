@@ -5,27 +5,35 @@
 
 /** \file */
 
+/**
+
+   Imprime por consola si existe un nuevo archivo o 
+   si se modificó un archivo.
+   
+   \brief Imprime modificaciones en directorio.
+   
+   \param fileEntry. Estructura que contiene información
+   de archivos. Se usa para saber si un archivo ha sido 
+   marcado con el atributo NODIFF, CHANGE o NEW.
+   
+   \return No retorna valor.
+*/
+
+void print(struct fileEntry);
 
 /**
-   Imprime los datos del fileEntry 'fe', usando el campo 'dt' para determinar
-   si es una entrada cambiada o nueva.
 
-   \brief Imprime los datos del fileEntry 'fe'.
+   Lanzador de acciones print
+   
+   \brief Lllamador de función print.
+   
+   \param entry_node* diffs. Lista enlazada con los 
+   archivos que han sido modificados o con los nuevos 
+   archivos que han sido agregados al directorio. 
 
-   \param fe Entrada de archivo a imprimir.
+   \return No tiene valor de retorno. Realiza operaciones
+   de E/S.
 */
-void print(struct fileEntry fe);
-
-
-
-/**
-   Imprime los datos de los fileEntry en la lista 'fel', usando el campo 'dt'
-   para determinar si es una entrada cambiada o nueva.
-
-   \brief Imprime los datos de los fileEntry en la lista 'fel'.
-
-   \param fel Lista de fileEntry a imprimir.
-*/
-void printer(entry_node* fel);
+void printer(entry_node*);
 
 #endif

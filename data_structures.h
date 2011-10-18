@@ -5,19 +5,40 @@
 /** \file */
 
 /**
-   Representa el tipo de diferencia de un archivo con respecto
-   a lo registrado en la última revisión.
-   
-   Tipo de diferencia de un archivo.
+   El tipo enum diff_type sirve para modelar los diferentes 
+   estados que pueden tener los archivos: NUEVO, MODIFICADO O 
+   SIN MODIFICAR.
+
+  \brief Modela estados de archivos.
+
+  \param NEW, CHANGE, NODIFF. Los diferentes valores con los que 
+  se modelan la presencia o ausencia de cambios en archivos.
+
+  \return No tiene valor de retorno.
+
 */
+
 enum diff_type{NEW , CHANGE , NODIFF};
 
+
 /**
-   Representa una entrada de archivo en el servidor HTTP. Incluye un campo
-   para el tipo de diferencia debido a que le es útil a las funciones update(),
-   diff() y printer().
+
+   Tipo de dato que contiene información acerca de un archivo. 
+   Se utiliza para almacenar características que luego son
+   usadas en opeaciones de diferencia y actualización.
    
-   \brief Representa una entrada de archivo en el servidor HTTP.
+  \brief Estructura que modela las características de un objeto.
+  
+  \param char* path. La ruta al directorio que se quiere examinar.
+  
+  \param char* URL. La dirección URL completa, incluyendo el
+  dominio.
+
+  \param char* date. La fecha de modificación del archivo.
+
+  \param char* size. El tamaño del archivo.
+
+  \return No tiene valor de retorno.
 */
 struct fileEntry{
 
@@ -40,6 +61,18 @@ struct fileEntry{
 
 } typedef fileEntry;
 
+
+/**
+
+   Lista enlazada de tipos fileEntry.
+   
+  \brief Estructura que almacena los diferentes fileEntry's 
+  del programa.
+  
+  \return No tiene valor de retorno.
+*/
+
+
 struct entry_node typedef entry_node;
 struct entry_node{
   fileEntry e;
@@ -47,12 +80,25 @@ struct entry_node{
 };
 
 
-// La estructura URL contiene los siguientes elementos:
-//     - dir: almacena el nombre del directorio con URL completo.
-//            Ejemplo: http://example.com/dir1              
-//     - domain: almacena el dominio del URL. (example.com)
-//     - netInfo: almacena la direcciÃ³n IP que corresponde al dominio
-//     - next: prÃ³ximo elemento de la lista URL
+/**
+
+   Estructura que contiene información sobre las direcciones
+   URL que se especifican revisar periódicamente en el programa.
+   
+  \brief Información sobre URL.
+  
+  \param char* dir. Directorio que se debe verificar. 
+  
+  \param char* domain. Dominio presente en el URL. 
+
+  \param addrinfo* netInfo. Dirección IP que corresponde 
+  al dominio.
+
+  \param URL* next. Próximo elemento en la lista enlazada 
+  de tipos URL. 
+
+  \return No tiene valor de retorno.
+*/
 struct URL typedef URL;
 
 struct URL
@@ -63,9 +109,21 @@ struct URL
   struct URL *next;
 };
 
-// Lista enlazada de apuntadores que se usan 
-// para consultar o insertar un elemento en 
-// la tabla de hash.
+/**
+
+   Lista enlazada de apuntadores que se usan 
+   para consultar o insertar un elemento en 
+   la tabla de hash.
+   
+  \brief Estructura que se utiliza para llevar 
+  control de estructuras almacenadas en memoria. 
+  
+  \param ENTRY* node. Nodo de tipo ENTRY. Es una 
+  tupla (key, value).
+
+  \return No tiene valor de retorno.
+*/
+
 struct eControl typedef eControl;
 
 struct eControl
@@ -74,9 +132,28 @@ struct eControl
   eControl *next;
 };
 
-// La estructura workerInfo se utiliza para solucionar 
-// la limitante que tienen las funciones threads en C 
-// las cuales se les pueden pasar un Ãºnico argumento.
+
+/**
+
+   La estructura workerInfo se utiliza para solucionar 
+   la limitante que tienen las funciones threads en C 
+   las cuales se les pueden pasar un único argumento.
+   
+  \brief Información útil para hilo.
+  
+  \param unsigned int time. Hora en la que ha sido 
+  modificado un archivo. 
+
+  \param URL* urlList. Lista enlazada de estructuras 
+  URL.
+
+  \param eControl* controlNodes. Lista enlazada de 
+  estructura que mantiene control de estructuras 
+  reservadas en memoria.
+  
+  \return No tiene valor de retorno.
+*/
+
 struct workerInfo typedef workerInfo;
 
 struct workerInfo 

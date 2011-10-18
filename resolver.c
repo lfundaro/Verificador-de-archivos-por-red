@@ -1,8 +1,5 @@
 #include "resolver.h"
 
-// Resuelve direcciones URL a IP.
-// Almacena las direcciones IP en la estructura
-// netInfo.
 void
 resolve (URL *urlList)
 {

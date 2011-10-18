@@ -5,11 +5,6 @@
 #include <search.h>
 #include <string.h>
 
-
-// Determina diferencias de fecha, hora y tamaño 
-// de los archivos del servidor con respecto a 
-// estos mismos despues de transcurrir un lapso 
-// de tiempo t.
 enum diff_type
 diff(fileEntry e) 
 {
@@ -44,8 +39,6 @@ diff(fileEntry e)
   return result;
 }
 
-// Función que construye lista de archivos que presentan 
-// diferencias.
 entry_node*
 differ(entry_node* entries){
   entry_node* curr = entries;//Variable de iteracion

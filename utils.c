@@ -2,8 +2,6 @@
 #include "globals.h"
 #define URL_MAX_SIZE 2048
 
-// Extrae las líneas especificadas en el archivo 
-// y almacena la información en la estructura URL. 
 URL *
 parseFile (FILE* fd) 
 {
@@ -71,9 +69,6 @@ free_URL (URL *url_list)
   return;
 }
 
-// Verifica si el directorio especificado por el usuario 
-// con la opción -d existe dentro del archivo especificado 
-// por la opción -a
 int 
 file_lookup (char *dir, URL *urlList) 
 {
@@ -97,7 +92,6 @@ init_entry(fileEntry* e){
   e->URL = NULL;
   e->date = NULL; 
   e->size = NULL; 
-  e->dateI = 0;
   e->dt = NODIFF;
 }
 
@@ -178,9 +172,6 @@ regex: One of the endpoints in a range expression was invalid.\n");
   return; 
 }
 
-// Hace una copia del apuntador de la estructura ENTRY 
-// que se almacena en la tabla de hash para después 
-// liberar dicho apuntador con todas sus subestructuras 
 void 
 add_eControl (ENTRY *p, eControl **controlNodes)
 {
@@ -191,8 +182,6 @@ add_eControl (ENTRY *p, eControl **controlNodes)
   return;
 }
 
-// Función que libera los datos guardados dentro de la 
-// tabla de hash.
 void
 free_ENTRY (eControl **controlNodes)
 {

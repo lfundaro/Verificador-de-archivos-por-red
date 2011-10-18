@@ -10,9 +10,37 @@
 #ifndef UTILS_H
 #define UTILS_H
 
+/** \file */
+
+/**
+
+   Extrae las líneas especificadas en el archivo 
+   y almacena la información en la estructura URL. 
+   
+   \brief Extrae información de archivos.
+   
+   \param FILE* File descriptor.
+
+   \return No retorna valor.
+*/
 URL *
 parseFile (FILE*);
+/**
 
+   Verifica si el directorio especificado por el usuario 
+   con la opción -d existe dentro del archivo especificado 
+   por la opción -a
+   
+   \brief Verifica consistencia entre opción -d y contenido 
+   de archivo.
+   
+   \param char* dir. Directorio especificado por el usuario.
+
+   \param URL* urlList. Lista enlazada de estructuras URL.
+
+   \return Retorna 0 si valor de dir corresponde con contenido
+   en archivo; -1 si el valor de dir no corresponde.
+*/
 int
 file_lookup (char *, URL *);
 
@@ -89,14 +117,35 @@ int asciichar_to_int(char c);
 */
 int http_error_handler(char* http_code, char* url);
 
+/**
+   Hace una copia del apuntador de la estructura ENTRY 
+   que se almacena en la tabla de hash para después 
+   liberar dicho apuntador con todas sus subestructuras 
+   
+   \brief    Agrega apuntador ENTRY a la lista de control.
+   
+   \param ENTRY *p. Tupla (key, valor).
 
+   \param eControl **controlNodes. Estructura que mantiene 
+   control de otras estructuras en memoria.
+
+   \return No retorna valor.
+*/
+void 
+add_eControl (ENTRY *p, eControl **controlNodes);
 
 /**
-   Agrega apuntador ENTRY a la lista de control.
+   
+   Función que libera los datos guardados dentro de la 
+   tabla de hash.
+   
+   \brief Agrega apuntador ENTRY a la lista de control.
+   
+   \param eControl **controlNodes. Estructura que mantiene 
+   control de otras estructuras en memoria.
+
+   \return No retorna valor.
 */
-void add_eControl (ENTRY *p, eControl **controlNodes);
-
-
-
-void free_ENTRY (eControl **controlNodes);
+void 
+free_ENTRY (eControl **controlNodes);
 #endif

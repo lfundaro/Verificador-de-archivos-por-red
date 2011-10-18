@@ -4,9 +4,8 @@
 #include <stdlib.h>
 #include <string.h>
 
-// Actualiza tabla de hash en caso de encontrar un archivo nuevo
-// o una modificación.
-void update(struct fileEntry e, eControl **controlNodes)
+void 
+update(struct fileEntry e, eControl **controlNodes)
 {
   if (e.dt == NODIFF)
     return;
@@ -34,7 +33,7 @@ void update(struct fileEntry e, eControl **controlNodes)
   return;
 }
 
-// Llama a funciÃ³n update
+
 void updater(entry_node* diffs, eControl **controlNodes){
   entry_node* curr = diffs;//Variable de iteracion
 

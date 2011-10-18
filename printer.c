@@ -3,8 +3,6 @@
 #include <stdio.h>
 
 
-// Imprime por consola si existe un nuevo archivo o 
-// si se modificó un archivo.
 void 
 print (struct fileEntry e)
 {
@@ -20,7 +18,6 @@ print (struct fileEntry e)
   return;
 }
 
-// Lanzador de acciones print
 void 
 printer(entry_node* diffs)
 {
