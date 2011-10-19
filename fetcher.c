@@ -41,7 +41,7 @@ fetch(URL* url, char** pg_ptr){
   int sock_des = 0;//descriptor de archivo que retorna socket()
   int ret = 0; //para guardar valores de retorno
 
-  //Cabecera que sera aÃ±adida al tope del HTML descargado
+  //Cabecera que sera añadida al tope del HTML descargado
   //para que el parser sepa el URL de las entradas
   int url_header_sz = strlen(url->dir) + 1;
   char* url_header = (char*)smalloc(sizeof(char)*(url_header_sz));
@@ -98,10 +98,12 @@ fetch(URL* url, char** pg_ptr){
 
   //Descargar pagina
   if (download_page(pg_ptr,sock_des,url_header,url_header_sz)){
+    free(url_header);
+    free(http_get);
     return 1;
   }
 
-  //printf("%s\n",(*pg_ptr));//(FLAG)
+  //  printf ("%s\n", (*pg_ptr)); // FLAG
 
   free(url_header);
   free(http_get);
@@ -116,6 +118,7 @@ download_page(char** pg_ptr, int sock_des,
   int ret; //Para guardar valores de retorno
 
   char* http_header = download_header(sock_des);
+  printf ("HEADER: %s\n", (http_header)); // FLAG
 
   //Recuperar código HTTP y manejarlo
   char http_code[3];
@@ -168,16 +171,16 @@ char*
 download_header(int sock_des){
   /*Lee el header HTTP en bloques de tamaño 'blck_sz'*/
 
-  //TamaÃ±o de bloque
+  //Tamaño de bloque
   int blck_sz = 200;
 
   //Cantidad de bytes por leer del bloque actual
   int pending_sz = blck_sz;
 
-  //TamaÃ±o maximo del bufer. Crece con el numero de bloques que se agregan
+  //Tamaño maximo del bufer. Crece con el numero de bloques que se agregan
   int max_buff_sz = blck_sz;
 
-  //TamaÃ±o actual del bufer. Cantidad de bytes en uso.
+  //Tamaño actual del bufer. Cantidad de bytes en uso.
   int total_buff_sz = 0;
 
   //Reserva inicial de espacio para la pagina
@@ -206,7 +209,7 @@ download_header(int sock_des){
 	  )&&
 	((read_bytes = read(sock_des,write_ptr,1)) > 0)){
 
-    //Actualizar detector de lÃ­neas vacÃ­as
+    //Actualizar detector de líneas vacías
     empty_line_detector[i] = (*write_ptr);
     i = (i+1) % 4;
 
@@ -214,7 +217,7 @@ download_header(int sock_des){
     pending_sz -= read_bytes;
     total_buff_sz += read_bytes;
 
-    //Si el tamaÃ±o del buffer alcanzÃ³ el mÃ¡ximo
+    //Si el tamaño del buffer alcanzÃ³ el mÃ¡ximo
     if(total_buff_sz == max_buff_sz){
 
       //Crear un nuevo bufer ('+ 1' por el byte nulo)
@@ -226,7 +229,7 @@ download_header(int sock_des){
       http_header = t;
       write_ptr = http_header+total_buff_sz;
 
-      //Actualizar la cantidad de bytes por leer y el tamaÃ±o máximo
+      //Actualizar la cantidad de bytes por leer y el tamaño máximo
       pending_sz = blck_sz;
       max_buff_sz += blck_sz;
     }
@@ -310,7 +313,7 @@ int download_body_no_clength(int sock_des, char** content,
     pending_sz -= read_bytes;
     total_buff_sz += read_bytes;
 
-    //Si el tamaÃ±o del buffer alcanzÃ³ el mÃ¡ximo
+    //Si el tamaño del buffer alcanzÃ³ el mÃ¡ximo
     if(total_buff_sz == max_buff_sz){
 
       //Crear un nuevo bufer ('+ 1' por el byte nulo)
