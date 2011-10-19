@@ -15,7 +15,7 @@
    
    \brief Resuelve URL a IP.
    
-   \param URL* urlList. Lista enlazada de direcciones
+   \param urlList. Lista enlazada de direcciones
    URL.
 
    \return No tiene valor de retorno.

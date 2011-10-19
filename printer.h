@@ -12,7 +12,7 @@
    
    \brief Imprime modificaciones en directorio.
    
-   \param fileEntry. Estructura que contiene información
+   \param e. Estructura que contiene información
    de archivos. Se usa para saber si un archivo ha sido 
    marcado con el atributo NODIFF, CHANGE o NEW.
    
@@ -27,7 +27,7 @@ void print(struct fileEntry);
    
    \brief Llamador de función print.
    
-   \param entry_node* diffs. Lista enlazada con los 
+   \param diffs. Lista enlazada con los 
    archivos que han sido modificados o con los nuevos 
    archivos que han sido agregados al directorio. 
 

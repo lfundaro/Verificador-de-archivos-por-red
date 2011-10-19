@@ -13,7 +13,7 @@
 
   \brief Determina modificación o creación de un archivo.
 
-  \param fileEntry Información sobre arhivo. 
+  \param e. Información sobre arhivo. 
 
   \return Retorna un indicador de diferencia: NODIFF, CHANGE o NEW.
 */
@@ -25,7 +25,7 @@ enum diff_type diff(fileEntry);
 
   \brief Ejecutar función de diferencias.
 
-  \param entry_node* apuntador a una lista enlazada de tipos fileEntry. 
+  \param entries. Apuntador a una lista enlazada de tipos fileEntry. 
 
   \return entry_node* modificado indicando modificaciones en archivos 
   o nuevos archivos.

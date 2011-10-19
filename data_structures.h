@@ -29,14 +29,14 @@ enum diff_type{NEW , CHANGE , NODIFF};
    
   \brief Estructura que modela las características de un objeto.
   
-  \param char* path. La ruta al directorio que se quiere examinar.
+  \param path. La ruta al directorio que se quiere examinar.
   
-  \param char* URL. La dirección URL completa, incluyendo el
+  \param URL. La dirección URL completa, incluyendo el
   dominio.
 
-  \param char* date. La fecha de modificación del archivo.
+  \param date. La fecha de modificación del archivo.
 
-  \param char* size. El tamaño del archivo.
+  \param size. El tamaño del archivo.
 
   \return No tiene valor de retorno.
 */
@@ -87,14 +87,14 @@ struct entry_node{
    
   \brief Información sobre URL.
   
-  \param char* dir. Directorio que se debe verificar. 
+  \param dir. Directorio que se debe verificar. 
   
-  \param char* domain. Dominio presente en el URL. 
+  \param domain. Dominio presente en el URL. 
 
-  \param addrinfo* netInfo. Dirección IP que corresponde 
+  \param netInfo. Dirección IP que corresponde 
   al dominio.
 
-  \param URL* next. Próximo elemento en la lista enlazada 
+  \param next. Próximo elemento en la lista enlazada 
   de tipos URL. 
 
   \return No tiene valor de retorno.
@@ -118,7 +118,7 @@ struct URL
   \brief Estructura que se utiliza para llevar 
   control de estructuras almacenadas en memoria. 
   
-  \param ENTRY* node. Nodo de tipo ENTRY. Es una 
+  \param node. Nodo de tipo ENTRY. Es una 
   tupla (key, value).
 
   \return No tiene valor de retorno.
@@ -141,13 +141,13 @@ struct eControl
    
   \brief Información útil para hilo.
   
-  \param unsigned int time. Hora en la que ha sido 
+  \param time. Hora en la que ha sido 
   modificado un archivo. 
 
-  \param URL* urlList. Lista enlazada de estructuras 
+  \param urlList. Lista enlazada de estructuras 
   URL.
 
-  \param eControl* controlNodes. Lista enlazada de 
+  \param controlNodes. Lista enlazada de 
   estructura que mantiene control de estructuras 
   reservadas en memoria.
   

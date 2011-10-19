@@ -50,9 +50,9 @@ slash_append (char *dir);
    \brief Verifica consistencia entre opción -d y contenido 
    de archivo.
    
-   \param char* dir. Directorio especificado por el usuario.
+   \param dir. Directorio especificado por el usuario.
 
-   \param URL* urlList. Lista enlazada de estructuras URL.
+   \param urlList. Lista enlazada de estructuras URL.
 
    \return Retorna 0 si valor de dir corresponde con contenido
    en archivo; -1 si el valor de dir no corresponde.
@@ -140,9 +140,9 @@ int http_error_handler(char* http_code, char* url);
    
    \brief    Agrega apuntador ENTRY a la lista de control.
    
-   \param ENTRY *p. Tupla (key, valor).
+   \param p. Tupla (key, valor).
 
-   \param eControl **controlNodes. Estructura que mantiene 
+   \param  controlNodes. Estructura que mantiene 
    control de otras estructuras en memoria.
 
    \return No retorna valor.
@@ -152,12 +152,12 @@ add_eControl (ENTRY *p, eControl **controlNodes);
 
 /**
    
-   FunciÃ³n que libera los datos guardados dentro de la 
+   Función que libera los datos guardados dentro de la 
    tabla de hash.
    
    \brief Agrega apuntador ENTRY a la lista de control.
    
-   \param eControl **controlNodes. Estructura que mantiene 
+   \param controlNodes. Estructura que mantiene 
    control de otras estructuras en memoria.
 
    \return No retorna valor.

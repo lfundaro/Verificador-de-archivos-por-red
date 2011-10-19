@@ -22,10 +22,10 @@
 
   \brief Orquetador de operaciones.
 
-  \param URL* lista enlazada con información de URL y su dirección
+  \param url_list. Lista enlazada con información de URL y su dirección
   ip.
 
-  \param eControl** apuntador a lista enlazada que lleva control 
+  \param controlNodes. Apuntador a lista enlazada que lleva control 
   de los apuntadores que se almacenan en la tabla de hash.
 
   \return retorna (void). Sin embargo, retorna la estructura 

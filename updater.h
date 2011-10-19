@@ -12,9 +12,9 @@
    
    \brief Actualiza tabla de hash.
    
-   \param fileEntry. Información sobre archivo.
+   \param e. Información sobre archivo.
 
-   \param eControl **controlNodes. Lista enlazada de 
+   \param controlNodes. Lista enlazada de 
    de apuntadores a estructuras en memoria.
 
    \return No tiene valor de retorno.
@@ -29,9 +29,9 @@ update(struct fileEntry,  eControl **controlNodes);
    
    \brief Función llamadora a update.
    
-   \param entry_node* diffs. Diferencias de archivos.
+   \param diffs. Diferencias de archivos.
 
-   \param eControl **controlNodes. Lista enlazada de 
+   \param controlNodes. Lista enlazada de 
    de apuntadores a estructuras en memoria.
 
    \return No tiene valor de retorno.
