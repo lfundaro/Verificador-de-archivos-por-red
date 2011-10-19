@@ -1,5 +1,6 @@
 *.pdf
 *.o
+*tar.gz
 semantic.cache
 *.*~
 main 
