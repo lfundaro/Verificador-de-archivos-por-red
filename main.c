@@ -219,6 +219,7 @@ main (int argc, char **argv)
     {
     urlAux = parseFile (fd);
     slash_append (dir);
+    //    printf ("dir: %d \n", strlen(dir));
     // Chequear si directorio dir existe en archivo
     if (file_lookup(dir, urlAux) != 0)  
       {
