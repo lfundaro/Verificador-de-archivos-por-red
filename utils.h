@@ -48,12 +48,12 @@ void
 init_entry(fileEntry* e);
 
 /**
-   Imprime los posibles mensajes de error que la librería 'regex.h'
+   Imprime los posibles mensajes de error que la librerÃ­a 'regex.h'
    puede generar.
 
    \brief Imprime mensajes de error de 'regex.h'
 
-   \param errcode Código del error.
+   \param errcode CÃ³digo del error.
 */
 void handle_regex_errors(int errcode);
 
@@ -71,49 +71,49 @@ void* smalloc(int size);
 
 
 /**
-   Traduce los primeros 'num_length' carácteres del arreglo 'asciinum' a un
-   número en base decimal. El número en la posición cero se considera el menos
+   Traduce los primeros 'num_length' carÃ¡cteres del arreglo 'asciinum' a un
+   nÃºmero en base decimal. El nÃºmero en la posiciÃ³n cero se considera el menos
    significativo.
 
-   \brief Transforma un número decimal en ASCII a complemento dos.
+   \brief Transforma un nÃºmero decimal en ASCII a complemento dos.
 
-   \param asciinum Arreglo con el número en ASCII.
+   \param asciinum Arreglo con el nÃºmero en ASCII.
 
-   \param num_length Cantidad de dígitos a traducir del arreglo 'asciinum'.
+   \param num_length Cantidad de dÃ­gitos a traducir del arreglo 'asciinum'.
 
-   \return Número transformado.
+   \return NÃºmero transformado.
 */
 int asciinum_to_int(char* asciinum, int num_length);
 
 
 
 /**
-   Traduce el carácter 'c' a un número del 0 al 9. Si el carácter
+   Traduce el carÃ¡cter 'c' a un nÃºmero del 0 al 9. Si el carÃ¡cter
    'c' no tiene un valor ASCII entre 48 y 57 se retorna -1.
 
-   \brief Transforma un carácter decimal en ASCII a complemento dos.
+   \brief Transforma un carÃ¡cter decimal en ASCII a complemento dos.
 
-   \param c Carácter con el número en ASCII.
+   \param c CarÃ¡cter con el nÃºmero en ASCII.
 
-   \return Número transformado.
+   \return NÃºmero transformado.
 */
 int asciichar_to_int(char c);
 
 
 
 /**
-   Imprime mensajes pertinentes para los diferentes códigos definidos
+   Imprime mensajes pertinentes para los diferentes cÃ³digos definidos
    para el protocolo HTTP.
 
-   \brief Imprime mensajes para los diferentes códigos HTTP.
+   \brief Imprime mensajes para los diferentes cÃ³digos HTTP.
 
-   \param http_code Código del mensaje HTTP.
+   \param http_code CÃ³digo del mensaje HTTP.
 
-   \param url %URL que se le concatenará al mensaje.
+   \param url %URL que se le concatenarÃ¡ al mensaje.
 
-   \return Retorna 1 (error) si el código HTTP era de redirección (3xx), 
+   \return Retorna 1 (error) si el cÃ³digo HTTP era de redirecciÃ³n (3xx), 
            error del cliente (4xx) o error del servidor (5xx).
-	   Para los otros tipos de código (1xx y 2xx) retorna 0 (éxito)
+	   Para los otros tipos de cÃ³digo (1xx y 2xx) retorna 0 (Ã©xito)
 */
 int http_error_handler(char* http_code, char* url);
 
@@ -136,7 +136,7 @@ add_eControl (ENTRY *p, eControl **controlNodes);
 
 /**
    
-   FunciÃ³n que libera los datos guardados dentro de la 
+   FunciÃƒÂ³n que libera los datos guardados dentro de la 
    tabla de hash.
    
    \brief Agrega apuntador ENTRY a la lista de control.

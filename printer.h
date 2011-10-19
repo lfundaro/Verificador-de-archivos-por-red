@@ -25,7 +25,7 @@ void print(struct fileEntry);
 
    Lanzador de acciones print
    
-   \brief Lllamador de función print.
+   \brief Llamador de función print.
    
    \param entry_node* diffs. Lista enlazada con los 
    archivos que han sido modificados o con los nuevos 

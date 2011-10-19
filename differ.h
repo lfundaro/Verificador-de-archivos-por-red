@@ -6,7 +6,7 @@
 /** \file */
 
 /**
-   Determina diferencias de fecha, hora y tamaño 
+   Determina diferencias de fecha, hora y tamaÃ±o 
    los archivos del servidor con respecto a 
    mismos despues de transcurrir un lapso 
    tiempo t.

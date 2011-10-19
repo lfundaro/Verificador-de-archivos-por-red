@@ -85,10 +85,14 @@ fetch(URL* url, char** pg_ptr){
   ret = write(sock_des, (void*)http_get, get_len);
   if(ret < 0){
     perror("Error escribiendo en el socket");
+    free(url_header);
+    free(http_get);
     exit(EXIT_FAILURE);
   }
   if(ret < get_len){
     perror("Error, transmision incompleta/fallida");
+    free(url_header);
+    free(http_get);
     exit(EXIT_FAILURE);
   }
 

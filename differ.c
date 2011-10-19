@@ -10,7 +10,7 @@ diff(fileEntry e)
 {
   ENTRY *found = NULL;
   int gle;
-  // ConstrucciÃ³n de estructura (key,data) que se inserta 
+  // Construcción de estructura (key,data) que se inserta 
   // en tabla de hash.
   ENTRY *qry = (ENTRY *) smalloc (sizeof(ENTRY));
   int keylength = strlen (e.URL) + strlen (e.path) + 1;

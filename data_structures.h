@@ -17,8 +17,8 @@
   \return No tiene valor de retorno.
 
 */
-
 enum diff_type{NEW , CHANGE , NODIFF};
+
 
 
 /**
