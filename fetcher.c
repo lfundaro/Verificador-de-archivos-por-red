@@ -103,7 +103,7 @@ fetch(URL* url, char** pg_ptr){
     return 1;
   }
 
-  //  printf ("%s\n", (*pg_ptr)); // FLAG
+  //printf ("%s\n", (*pg_ptr)); // FLAG
 
   free(url_header);
   free(http_get);
