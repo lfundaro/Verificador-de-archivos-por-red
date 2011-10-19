@@ -9,7 +9,7 @@ parseFile (FILE* fd)
   int char_size = URL_MAX_SIZE;
   char *input_line = (char *) smalloc (char_size + 1);
   int clines = 0;
-  URL *curr;
+  URL *curr = NULL;
   URL *head = NULL;
   int i;
   
@@ -41,7 +41,8 @@ parseFile (FILE* fd)
   
   if (clines == 0) 
     {// no hay líneas en archivo
-      free (curr);
+      free (input_line);
+      fclose (fd);
       puts ("Archivo vacío");
       exit (EXIT_FAILURE);
     }
