@@ -199,6 +199,9 @@ main (int argc, char **argv)
       urlList->domain = (char *) smalloc (sizeof (char)*1024);
       memset ((void *) urlList->domain, '\0', sizeof (char) * 1024);      
       strcpy (urlList->dir, dir);
+      size_t dir_len = strlen (urlList->dir);
+      if (strncmp ("/", urlList->dir + dir_len - 1, 1) != 0)
+        strcat (urlList->dir, "/");
       // extracción de dominio en URL
       int i;
       for (i = 7; i < strlen (dir) ; i++)
