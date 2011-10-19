@@ -74,6 +74,18 @@ free_URL (URL *url_list)
   return;
 }
 
+int
+slash_append (char *dir)
+{
+  size_t len = strlen (dir);
+  if (strncmp ("/", dir + len - 1, 1) != 0)
+    {
+      strcat (dir, "/");
+      return 1;
+    }
+  return 0;
+}
+
 int 
 file_lookup (char *dir, URL *urlList) 
 {

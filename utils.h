@@ -25,6 +25,22 @@
 */
 URL *
 parseFile (FILE*);
+
+/**
+
+   Concatena una barra al final del directorio 
+   si éste no se encuentra presente.
+   
+   \brief Completar con barra.
+   
+   \param dir. Directorio a verificar.
+
+   \return Retorna 1 si agregó una barra al final 
+   del parámetro dir; 0 si no.
+*/
+int
+slash_append (char *dir);
+
 /**
 
    Verifica si el directorio especificado por el usuario 
