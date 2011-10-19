@@ -62,10 +62,10 @@ parse(char* pg, struct entry_node** list){
   regex_t** cpattern = (regex_t**)smalloc(sizeof(regex_t*));
   (*cpattern) = NULL;
 
-  //Mientras halla entradas
+  //Mientras haya entradas
   while(match_entry(pg_ptr,matches,cpattern)){
 
-    //A~nadir la nueva entrada
+    //Añadir la nueva entrada
     fileEntry e = parse_entry(pg_ptr,(*base_url),(*path),matches);
     *list = add_head(e,*list);
 
@@ -154,10 +154,10 @@ parse_entry(char* pg_ptr, char* base_url, char* path,
   }
   e.date = entry_date;
 
-  /***Recuperar tama~no***/
+  /***Recuperar tamaño***/
   char* entry_size = get_data(REG_SIZE_POS,pg_ptr,matches);
   if(entry_date == (char*)-1){
-    fprintf(stdout,"Error: entrada sin tama~no\n");
+    fprintf(stdout,"Error: entrada sin tamaño\n");
     exit(EXIT_FAILURE);
   }
   e.size = entry_size;

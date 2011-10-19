@@ -150,7 +150,8 @@ main (int argc, char **argv)
         fd = fopen (file, "r");
         if (fd == NULL) 
           {
-            perror ("No se puedo abrir el archivo %s");
+            printf ("No se pudo abrir el archivo %s\n", file);
+            perror("Error");
             exit (EXIT_FAILURE);
           }
         file_enabled = true;
