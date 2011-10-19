@@ -27,6 +27,10 @@ parseFile (FILE* fd)
       input_line[chars_read - 1] = '\0';
       // Copiar string de directorio a estructura URL
       strcpy (curr->dir, input_line);
+      // Chequear si el penúltimo caracter es un slash
+      size_t dir_len = strlen (curr->dir);
+      if (strncmp ("/", curr->dir + dir_len - 1, 1) != 0)
+        strcat (curr->dir, "/");
       // extraer dominio del URL 
       // empezando desde el 7mo caracter http:// <-
       for (i = 7; i < char_size + 1; i++)
