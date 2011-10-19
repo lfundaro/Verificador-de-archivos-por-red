@@ -117,6 +117,8 @@ download_page(char** pg_ptr, int sock_des,
 
   char* http_header = download_header(sock_des);
 
+  //printf("HEADER: %s",http_header);//flag
+
   //Recuperar código HTTP y manejarlo
   char http_code[3];
   http_code[0] = http_header[8 + 1];
@@ -198,15 +200,15 @@ download_header(int sock_des){
   empty_line_detector[2] = '\0';
   empty_line_detector[3] = '\0';
 
-  //Mientras read() lea algo que no sea una linea vacia
-  while(!((empty_line_detector[0] == '\r')&&
-	  (empty_line_detector[1] == '\n')&&
-	  (empty_line_detector[2] == '\r')&&
-	  (empty_line_detector[3] == '\n')
+  //Mientras read() lea algo que no sea una línea vacía
+  while(!((empty_line_detector[(i+0)%4] == '\r')&&
+	  (empty_line_detector[(i+1)%4] == '\n')&&
+	  (empty_line_detector[(i+2)%4] == '\r')&&
+	  (empty_line_detector[(i+3)%4] == '\n')
 	  )&&
 	((read_bytes = read(sock_des,write_ptr,1)) > 0)){
 
-    //Actualizar detector de lÃ­neas vacÃ­as
+    //Actualizar detector de líneas vacías
     empty_line_detector[i] = (*write_ptr);
     i = (i+1) % 4;
 
