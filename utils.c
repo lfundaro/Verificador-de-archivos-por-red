@@ -16,6 +16,10 @@ parseFile (FILE* fd)
   // Leer línea por línea de archivo
   while ((chars_read = getline (&input_line, &char_size, fd)) != -1)
     {
+      if (strcmp ("\n", input_line) == 0) // Skip \n
+        {
+          continue;
+        }
       // Pedir e inicializar memoria para estructuras
       curr = (URL *) smalloc (sizeof (URL));
       memset ((void *) curr, '\0', sizeof (URL));
@@ -28,9 +32,7 @@ parseFile (FILE* fd)
       // Copiar string de directorio a estructura URL
       strcpy (curr->dir, input_line);
       // Chequear si el penúltimo caracter es un slash
-      size_t dir_len = strlen (curr->dir);
-      if (strncmp ("/", curr->dir + dir_len - 1, 1) != 0)
-        strcat (curr->dir, "/");
+      slash_append (curr->dir);
       // extraer dominio del URL 
       // empezando desde el 7mo caracter http:// <-
       for (i = 7; i < char_size + 1; i++)
@@ -81,6 +83,7 @@ slash_append (char *dir)
   if (strncmp ("/", dir + len - 1, 1) != 0)
     {
       strcat (dir, "/");
+      //      dir[len] = '\0';
       return 1;
     }
   return 0;
@@ -92,9 +95,11 @@ file_lookup (char *dir, URL *urlList)
   URL *tmp = urlList;
   int cmp = -1;
   // Recorrer lista de directorios
-  while (tmp->next != NULL)
+  while (tmp)
     {
       cmp = strcmp (dir, tmp->dir);
+      //      printf ("%s \n", dir);
+      //      printf ("%s %d\n",tmp->dir,cmp);
       if (cmp == 0) 
         break;
       tmp = tmp->next;
