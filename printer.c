@@ -23,7 +23,6 @@ printer(entry_node* diffs)
   entry_node* curr = diffs;//Variable de iteracion
 
   if(diffs == NULL){
-    printf("No se encontraron cambios en el directorio\n\n");
     return;
   }
 
