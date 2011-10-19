@@ -65,6 +65,7 @@ fetch(URL* url, char** pg_ptr){
 		pg_addr.ai_addr, 
 		pg_addr.ai_addrlen);
   if(ret){
+    close(sock_des);
     perror("Error conectandose");
     exit(EXIT_FAILURE);
   }
@@ -85,12 +86,14 @@ fetch(URL* url, char** pg_ptr){
   ret = write(sock_des, (void*)http_get, get_len);
   if(ret < 0){
     perror("Error escribiendo en el socket");
+    close(sock_des);
     free(url_header);
     free(http_get);
     exit(EXIT_FAILURE);
   }
   if(ret < get_len){
     perror("Error, transmision incompleta/fallida");
+    close(sock_des);
     free(url_header);
     free(http_get);
     exit(EXIT_FAILURE);
@@ -98,6 +101,7 @@ fetch(URL* url, char** pg_ptr){
 
   //Descargar pagina
   if (download_page(pg_ptr,sock_des,url_header,url_header_sz)){
+    close(sock_des);
     free(url_header);
     free(http_get);
     return 1;
