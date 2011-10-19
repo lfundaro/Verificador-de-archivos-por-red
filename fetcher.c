@@ -123,9 +123,6 @@ download_page(char** pg_ptr, int sock_des,
   int ret; //Para guardar valores de retorno
 
   char* http_header = download_header(sock_des);
-  //  printf ("HEADER: %s\n", (http_header)); // FLAG
-
-  //printf("HEADER: %s",http_header);//flag
 
   //Recuperar código HTTP y manejarlo
   char http_code[3];
