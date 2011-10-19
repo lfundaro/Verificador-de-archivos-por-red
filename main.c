@@ -188,7 +188,7 @@ main (int argc, char **argv)
   if (time == -1)
     time = DEFAULT_TIME;
   
-  if (fd != NULL) // extraer información útil de archivo
+  if (fd != NULL && !dir_enabled) // extraer información útil de archivo
     urlList  = parseFile(fd);
   else // poner información de directorio en urlList 
     {
@@ -199,9 +199,7 @@ main (int argc, char **argv)
       urlList->domain = (char *) smalloc (sizeof (char)*1024);
       memset ((void *) urlList->domain, '\0', sizeof (char) * 1024);      
       strcpy (urlList->dir, dir);
-      size_t dir_len = strlen (urlList->dir);
-      if (strncmp ("/", urlList->dir + dir_len - 1, 1) != 0)
-        strcat (urlList->dir, "/");
+      slash_append (urlList->dir);
       // extracción de dominio en URL
       int i;
       for (i = 7; i < strlen (dir) ; i++)
@@ -215,17 +213,27 @@ main (int argc, char **argv)
   // Resolución DNS
   resolve (urlList);
   
+  URL* urlAux = NULL;
   // opción de directorio y archivo activas
   if (dir_enabled && file_enabled)
+    {
+    urlAux = parseFile (fd);
+    slash_append (dir);
     // Chequear si directorio dir existe en archivo
-    if (file_lookup(dir, urlList) != 0)  
+    if (file_lookup(dir, urlAux) != 0)  
       {
         fprintf (stderr, "El directorio %s no existe en el archivo %s.\n", 
                  dir, file);
+        free_URL (urlAux);
         bye (fd, urlList);
         exit (EXIT_FAILURE);
       }
-
+    }
+  
+  if (urlAux)
+    {
+      free_URL (urlAux);
+    }
 
   /***** BEGIN threads *****/
 
