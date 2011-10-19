@@ -105,6 +105,7 @@ fetch(URL* url, char** pg_ptr){
 
   //printf ("%s\n", (*pg_ptr)); // FLAG
 
+  close(sock_des);
   free(url_header);
   free(http_get);
 
