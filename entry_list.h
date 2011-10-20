@@ -3,7 +3,7 @@
 
 #include "data_structures.h"
 
-/** \file */
+/** \file x */
 
 /**
    Agrega un nodo después del nodo apuntado por el segundo argumento.
