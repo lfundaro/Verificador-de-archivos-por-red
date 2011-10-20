@@ -17,7 +17,7 @@
 
   \return Retorna un indicador de diferencia: NODIFF, CHANGE o NEW.
 */
-enum diff_type diff(fileEntry);
+enum diff_type diff(fileEntry e);
 
 /**
    Función que itera sobre estructura entry_node y para cada 
@@ -30,6 +30,6 @@ enum diff_type diff(fileEntry);
   \return entry_node* modificado indicando modificaciones en archivos 
   o nuevos archivos.
 */
-entry_node* differ(entry_node*);
+entry_node* differ(entry_node* entries);
 
 #endif

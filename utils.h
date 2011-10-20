@@ -24,7 +24,7 @@
    \return No retorna valor.
 */
 URL *
-parseFile (FILE*);
+parseFile (FILE* fd);
 
 /**
 
@@ -58,7 +58,7 @@ slash_append (char *dir);
    en archivo; -1 si el valor de dir no corresponde.
 */
 int
-file_lookup (char *, URL *);
+file_lookup (char * dir, URL *urlList);
 
 void
 init_entry(fileEntry* e);
@@ -73,8 +73,6 @@ init_entry(fileEntry* e);
 */
 void handle_regex_errors(int errcode);
 
-
-
 /**
    Llama a malloc, en caso de que malloc falle llama a exit().
 
@@ -83,8 +81,6 @@ void handle_regex_errors(int errcode);
    \param size Cantidad de memoria (en bytes) a reservar.
 */
 void* smalloc(int size);
-
-
 
 /**
    Traduce los primeros 'num_length' carácteres del arreglo 'asciinum' a un

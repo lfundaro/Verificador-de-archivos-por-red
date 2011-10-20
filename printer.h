@@ -19,7 +19,7 @@
    \return No retorna valor.
 */
 
-void print(struct fileEntry);
+void print(struct fileEntry e);
 
 /**
 
@@ -34,6 +34,6 @@ void print(struct fileEntry);
    \return No tiene valor de retorno. Realiza operaciones
    de E/S.
 */
-void printer(entry_node*);
+void printer(entry_node* diffs);
 
 #endif

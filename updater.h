@@ -21,7 +21,7 @@
 
 */
 void 
-update(struct fileEntry,  eControl **controlNodes);
+update(struct fileEntry e, eControl **controlNodes);
 
 
 /**
@@ -37,6 +37,6 @@ update(struct fileEntry,  eControl **controlNodes);
    \return No tiene valor de retorno.
 */
 void 
-updater(entry_node*, eControl **controlNodes);
+updater(entry_node* diffs, eControl **controlNodes);
 
 #endif
