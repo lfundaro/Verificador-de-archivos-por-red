@@ -1,6 +1,6 @@
 GCC = gcc
-OPS = -g
-LINK_OPS = -lpthread
+OPS = -O3 -w
+LINK_OPS = -lpthread 
 OBJS = main.o fetcher.o entry_list.o parser.o differ.o updater.o printer.o utils.o resolver.o dispatcher.o
 TEST_OBJS = test.o fetcher.o entry_list.o parser.o printer.o utils.o dispatcher.o differ.o updater.o
 
